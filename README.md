@@ -1,8 +1,10 @@
 # ECE 461L Group Project
+
 Professor: Dr. Abhay Samant
 Spring 2024, University of Texas at Austin
 
 ## Team Members
+
 1. [Armaan Vakharia](https://github.com/armaan-v924)
 2. Arnav Kithania
 3. Fahim Imtaiz
@@ -11,7 +13,8 @@ Spring 2024, University of Texas at Austin
 ## Environment Setup
 
 ### Project File Structure
-```
+
+```file
 ./Project-Directory/
 | -- backend /
 |    | -- app.py
@@ -23,6 +26,7 @@ Spring 2024, University of Texas at Austin
 ```
 
 ### Backend Setup
+
 1. Install [Python 3.11](https://www.python.org/downloads/)
 2. Use an environment manager like `pipenv` or `conda` to create a virtual environment.
    * For conda, use `conda create -n <env-name> python=3.11`
@@ -30,6 +34,7 @@ Spring 2024, University of Texas at Austin
 3. Install the packages: `conda install bcrypt flask flask-cors flask-login flask-pymongo`
 
 ### Frontend Setup
+
 1. Install [Node.js](https://nodejs.org/en)
 2. Open a terminal and navigate to the `Project-Directory`
 3. Create a new Vite app using `npm create vite@latest`
@@ -41,6 +46,7 @@ Spring 2024, University of Texas at Austin
 6. Install tailwindcss: `npm install tailwindcss postcss autoprefixer`
 7. Initialize tailwindcss: `npx tailwindcss init -p`
 8. Edit `tsconfig.json` and add the following code:
+
 ```json
 {
     {
@@ -57,8 +63,10 @@ Spring 2024, University of Texas at Austin
     }
 }
 ```
+
 9. Run `npm i -D @types/node`
 10. Update `vite.config.ts` to include the following code:
+
 ```typescript
 import path from "path"
 import react from "@vitejs/plugin-react"
@@ -73,6 +81,7 @@ export default defineConfig({
   },
 })
 ```
+
 11. Run the CLI using: `npx shadcn-ui@latest init`
     * Choose `yes` to use TypeScript
     * Choose `Default` as the style
