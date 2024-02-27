@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import bcrypt
 import jwt
 import pymongo
 from app import app, mongo
@@ -29,7 +28,6 @@ def signup():
         response = jsonify({'error': 'A user with that username already exists'}), 400 
     
     return response
-
 
 @app.route('/login', methods=['POST'])
 def login():

@@ -1,4 +1,3 @@
-// components/AuthContext.tsx
 import React, { useState, createContext, useEffect } from "react";
 import auth from "../api/auth.ts";
 

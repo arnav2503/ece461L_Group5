@@ -1,6 +1,4 @@
-from app import mongo
-from mongoengine import Document, StringField, IntField, ReferenceField, ListField
-
+from mongoengine import Document, StringField, ReferenceField, ListField
 
 class User(Document):
     username = StringField(required=True, unique=True, primary_key=True)
