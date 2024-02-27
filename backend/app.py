@@ -2,7 +2,7 @@ from bson import ObjectId
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_pymongo import PyMongo
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required 
+from flask_login import LoginManager, login_user, logout_user, login_required 
 from config import config  # Import your configurations
 
 app = Flask(__name__)
