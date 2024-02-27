@@ -58,3 +58,4 @@ export default defineConfig({
     * Enter `@/lib/utils` for the utils directory
     * Select `no` for using React Server Components
 12. To add a component use: `npx shadcn-ui@latest add component <component-name>`. The component will be added to the `src/components/ui` directory. Check a list of available components [here](https://ui.shadcn.com/docs/components/accordion)
+13. Also install the following packages: `npm install react-router-dom axios`
