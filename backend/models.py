@@ -1,10 +1,9 @@
-from flask_login import UserMixin
 from app import mongo
 from mongoengine import Document, StringField, IntField, ReferenceField, ListField
 
 
-class User(Document, UserMixin):
-    username = StringField(required=True, unique=True)
+class User(Document):
+    username = StringField(required=True, unique=True, primary_key=True)
     password_hash = StringField(required=True)  
     project_list = ListField(ReferenceField('Project'), default=list)
 

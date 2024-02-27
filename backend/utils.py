@@ -6,4 +6,4 @@ def hash_password(password):
     return hashed_password.decode('utf-8')
 
 def compare_passwords(plain_text_password, hashed_password):
-    return bcrypt.checkpw(plain_text_password.encode(), hashed_password.encode())
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_password.encode('utf-8'))

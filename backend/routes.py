@@ -1,57 +1,55 @@
+from datetime import datetime, timedelta
+import bcrypt
+import jwt
 import pymongo
 from app import app, mongo
 from flask import request, jsonify
-from flask_login import current_user, login_required, login_user, logout_user
 from models import User  # Import the User model
-from utils import compare_passwords, hash_password  # Helper for password encryption
+from utils import hash_password, compare_passwords  # Helper for password encryption
 
-@app.route('/signup', methods=['POST']) 
+@app.route('/signup', methods=['POST', 'OPTIONS'])
 def signup():
-    data = request.get_json()
+    if request.method == 'OPTIONS':
+        response = jsonify({'message': 'Preflight request successful'}), 200
+        return response
+    
+    username = request.json.get('username')
+    password = request.json.get('password')
 
-    # Input validation
-    if not data.get('username') or not data.get('password'):
-        return jsonify({'error': 'Missing username or password'}), 400 
+    if not username or not password:
+        response = jsonify({'error': 'Username and password are required'}), 400
 
-    # Ensure username uniqueness (handled by MongoDB index)
+    password_hash = hash_password(password)
+    new_user = User(username=username, password_hash=password_hash)
+
     try:
-        new_user = User(
-            _id=data['username'], 
-            password_hash=hash_password(data['password']) 
-        )
-        new_user.save() 
+        mongo.users.insert_one(new_user.to_mongo())
+        response = jsonify({'message': 'User created successfully'}), 201
+    except pymongo.errors.DuplicateKeyError: 
+        response = jsonify({'error': 'A user with that username already exists'}), 400 
+    
+    return response
 
-        login_user(new_user)  
-        return jsonify({'message': 'User created and logged in'}) 
-
-    except pymongo.errors.DuplicateKeyError:
-        return jsonify({'error': 'Username already exists'}), 409  
 
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
-
-    user = mongo.db.User.find_one({'username': username})
-    if user and compare_passwords(password, user['password_hash']):
-        login_user(user)  # Use Flask-Login's login_user 
-        return jsonify({'message': 'Login successful'})
-    else:
-        return jsonify({'error': 'Invalid credentials'}), 401
+    if request.method == 'OPTIONS':
+        response = jsonify({'message': 'Preflight request successful'}), 200
+        return response
     
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return jsonify({'message': 'Logged out'})
+    username = request.json.get('username')
+    password = request.json.get('password')
 
-@app.route('/test-auth')
-def test_auth():
-    if current_user.is_authenticated:
-        return jsonify({
-            'message': 'You are logged in!',
-            'username': current_user.username
-        })
+    user = mongo.users.find_one({'_id': username})
+    if user and compare_passwords(password, user['password_hash']):
+        token = jwt.encode({ 
+            'username': str(user['_id']),  # Assuming _id is your MongoDB ObjectID
+            'exp': datetime.utcnow() + timedelta(hours=24)  # Token expires in 24 hours
+        }, app.config['SECRET_KEY'])  # Use your app's secret key
+
+        response = jsonify({'token': token}), 200
     else:
-        return jsonify({'message': 'Please log in'}), 401 
+        response = jsonify({'error': 'Invalid username or password'}), 401
+
+    return response
+    
