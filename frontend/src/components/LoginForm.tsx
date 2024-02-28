@@ -11,7 +11,6 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
   const { setIsAuthenticated } = React.useContext(AuthContext);
@@ -19,7 +18,6 @@ const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setErrorMessage(""); // Clear any previous errors
 
     try {
       await auth.login(username, password);
@@ -28,10 +26,9 @@ const LoginForm = () => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          setErrorMessage(error.response.data.error);
           toast({
-            title: "Login Error:",
-            description: errorMessage,
+            title: "Login Failed",
+            description: error.response.data.error,
             variant: "destructive",
           });
         } else {

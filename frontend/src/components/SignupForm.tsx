@@ -11,24 +11,21 @@ const SignupForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(""); // Additional field
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match");
       toast({
         title: "Signup failed",
-        description: errorMessage,
+        description: "Passwords do not match",
         variant: "destructive",
       });
       return; // Early exit
     }
 
     setIsLoading(true);
-    setErrorMessage("");
     try {
       const response = await auth.signup(username, password);
       console.log("Signup successful:", response);
@@ -36,19 +33,26 @@ const SignupForm = () => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          setErrorMessage(error.response.data.error);
+          toast({
+            title: "Signup failed",
+            description: error.response.data.error,
+            variant: "destructive",
+          });
         } else {
-          setErrorMessage("Network error. Please try again.");
+          toast({
+            title: "Signup failed",
+            description: "Network error. Please try again.",
+            variant: "destructive",
+          });
         }
       } else {
         console.error("Unexpected error during signup:", error); // Log for debugging
-        setErrorMessage("An unexpected error occurred. Please try again.");
+        toast({
+          title: "Signup failed",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
       }
-      toast({
-        title: "Signup failed",
-        description: errorMessage,
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }
