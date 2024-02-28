@@ -1,18 +1,11 @@
 import { useContext } from "react";
 import { AuthContext } from "@/components/AuthContext";
-import { Button } from "@/components/ui/button";
-import auth from "@/api/auth";
 import { useNavigate } from "react-router-dom";
+import LogoutButton from "./LogoutButton";
 
 function HomePage() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    auth.logout();
-    navigate("/");
-  };
 
   return (
     <div className="container mx-auto">
@@ -20,7 +13,9 @@ function HomePage() {
       {isAuthenticated ? (
         <>
           <p>You are logged in</p>
-          <Button onClick={handleLogout}>Log Out</Button>
+          <LogoutButton className="mt-2" variant="destructive">
+            Log Out
+          </LogoutButton>
         </>
       ) : (
         <>
