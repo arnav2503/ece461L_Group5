@@ -1,11 +1,9 @@
 import { useContext } from "react";
 import { AuthContext } from "@/components/AuthContext";
-import { useNavigate } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 
 function HomePage() {
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <div className="container mx-auto">
