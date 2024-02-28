@@ -5,8 +5,31 @@ from app import app, mongo
 from flask import request, jsonify
 from models import User  # Import the User model
 from utils import hash_password, compare_passwords  # Helper for password encryption
+from functools import wraps
 
-@app.route('/signup', methods=['POST', 'OPTIONS'])
+def login_required(f):
+    @wraps(f)
+    def secured_function(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            response = jsonify({'error': 'Token is missing'}), 401
+            return response
+
+        try:
+            token = token.split(' ')[1]  # Remove 'Bearer' from token
+            payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+            kwargs['payload'] = payload
+            return f(*args, **kwargs)
+        except jwt.ExpiredSignatureError:
+            response = jsonify({'error': 'Token has expired'}), 401
+        except jwt.InvalidTokenError:
+            response = jsonify({'error': 'Invalid token'}), 401
+
+        return response
+
+    return secured_function
+
+@app.route('/api/signup', methods=['POST', 'OPTIONS'])
 def signup():
     if request.method == 'OPTIONS':
         response = jsonify({'message': 'Preflight request successful'}), 200
@@ -29,7 +52,7 @@ def signup():
     
     return response
 
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def login():
     if request.method == 'OPTIONS':
         response = jsonify({'message': 'Preflight request successful'}), 200
@@ -43,11 +66,31 @@ def login():
         token = jwt.encode({ 
             'username': str(user['_id']),  # Assuming _id is your MongoDB ObjectID
             'exp': datetime.utcnow() + timedelta(hours=24)  # Token expires in 24 hours
-        }, app.config['SECRET_KEY'])  # Use your app's secret key
+        }, app.config['SECRET_KEY'], algorithm='HS256')  # Use your app's secret key
 
         response = jsonify({'token': token}), 200
     else:
         response = jsonify({'error': 'Invalid username or password'}), 401
 
     return response
-    
+
+@app.route('/api/validate-token', methods=['GET'])
+@login_required
+def validate_token():
+    response = jsonify({'message': 'Token is valid'}), 200
+    return response
+
+@app.route('/api/get-user', methods=['GET'])
+@login_required
+def get_user(payload):
+    user = mongo.users.find_one({'_id': payload['username']})
+    response = jsonify({'username': user['_id']}), 200
+    return response
+
+@app.route('/api/get-projects', methods=['GET'])
+@login_required
+def get_projects(payload):
+    user = mongo.users.find_one({'_id': payload['username']})
+    projects = user['projects']
+    response = jsonify({'projects': projects}), 200
+    return response

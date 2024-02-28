@@ -60,11 +60,7 @@ const SignupForm = () => {
 
   return (
     <div className="container mx-auto">
-      {" "}
-      {/* Container for centering */}
       <div className="flex flex-col items-center py-12">
-        {" "}
-        {/* Basic layout */}
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
           <Input

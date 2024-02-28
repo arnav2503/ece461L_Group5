@@ -1,13 +1,43 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/components/AuthContext";
 import LogoutButton from "./LogoutButton";
+import auth from "@/api/auth";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const [username, setUsername] = useState(""); // Fix: Use correct syntax for useState hook
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await auth.getUser();
+        console.log("User:", user);
+        setUsername(user.username);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            if (error.response.status === 401) {
+              auth.logout();
+              setIsAuthenticated(false);
+              navigate("/login");
+            }
+          } else {
+            console.error("Network error. Please try again.");
+          }
+        } else {
+          console.error("An unexpected error occurred:", error);
+        }
+      }
+    };
+    fetchUser();
+  }, []);
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-3xl font-semibold my-5">Welcome to the homepage</h1>
+      <h1 className="text-3xl font-semibold my-5">Welcome, {username}</h1>
       {isAuthenticated ? (
         <>
           <p>You are logged in</p>
