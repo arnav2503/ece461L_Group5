@@ -1,10 +1,10 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import auth from "../api/auth";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
   const [username, setUsername] = useState("");

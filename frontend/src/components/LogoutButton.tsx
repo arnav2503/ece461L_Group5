@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import auth from "../api/auth";
 import { AuthContext } from "./AuthContext";
 import { Button } from "./ui/button";
-import auth from "../api/auth";
 
 function LogoutButton(props: React.ComponentProps<typeof Button>) {
   const navigate = useNavigate();

@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/components/AuthContext";
-import LogoutButton from "./LogoutButton";
 import auth from "@/api/auth";
+import { AuthContext } from "@/components/AuthContext";
 import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LogoutButton from "./LogoutButton";
 
 function HomePage() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
