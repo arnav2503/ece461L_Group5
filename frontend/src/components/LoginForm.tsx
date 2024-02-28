@@ -6,8 +6,13 @@ import { AuthContext } from "./AuthContext";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
+import { cn } from "@/lib/utils";
 
-const LoginForm = () => {
+interface LoginFormProps {
+  className?: string;
+}
+
+const LoginForm = (props: LoginFormProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -47,10 +52,8 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      {" "}
+    <div className={cn("container mx-auto", props.className)}>
       <div className="flex flex-col items-center py-12">
-        {" "}
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
           <Input
