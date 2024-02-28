@@ -12,14 +12,14 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(auth.isLoggedIn());
 
-  // Check authentication on component mount
   useEffect(() => {
-    const checkAuth = async () => {
-      setIsAuthenticated(auth.isLoggedIn());
+    const check_auth = async () => {
+      const isLoggedIn = await auth.isLoggedIn();
+      setIsAuthenticated(isLoggedIn);
     };
-    checkAuth();
+    check_auth();
   }, []);
 
   return (

@@ -23,7 +23,7 @@ const logout = () => {
 };
 
 const isLoggedIn = () => {
-  return !!localStorage.getItem(TOKEN_KEY);
+  return localStorage.getItem(TOKEN_KEY) !== null;
 };
 
 const getAuthToken = () => {
