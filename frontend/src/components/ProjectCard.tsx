@@ -29,6 +29,7 @@ const ProjectCard = ({
   resourcesCapacity,
 }: ProjectProps) => {
   const calculateProgress = () => {
+    // TODO: Implement the logic to calculate the progress
     return 10;
   };
 
