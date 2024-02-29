@@ -15,5 +15,5 @@ from routes import *
 # from project_routes import *
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=app.config['DEBUG'], port=app.config['PORT'])
 
