@@ -11,7 +11,8 @@ app.config.from_object(config['development'])
 client = MongoClient(app.config['MONGO_URI'])
 mongo = client.get_database("461l")
  
-from routes import * 
+from backend.auth_routes import * 
+from backend.project_routes import *
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

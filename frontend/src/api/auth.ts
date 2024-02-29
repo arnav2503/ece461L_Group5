@@ -11,7 +11,7 @@ const signup = async (username: string, password: string) => {
 const login = async (username: string, password: string) => {
   const response = await axios.post(`${baseURL}/api/login`, { username, password }, { withCredentials: true });
 
-  if (response.data.token) { // Assuming your backend returns a 'token' property
+  if (response.data.token) { 
     localStorage.setItem(TOKEN_KEY, response.data.token);
   }
 

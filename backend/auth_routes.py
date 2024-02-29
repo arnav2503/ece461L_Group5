@@ -7,6 +7,7 @@ from models import User  # Import the User model
 from utils import hash_password, compare_passwords  # Helper for password encryption
 from functools import wraps
 
+# User Authentication Routes
 def login_required(f):
     @wraps(f)
     def secured_function(*args, **kwargs):
@@ -87,10 +88,4 @@ def get_user(payload):
     response = jsonify({'username': user['_id']}), 200
     return response
 
-@app.route('/api/get-projects', methods=['GET'])
-@login_required
-def get_projects(payload):
-    user = mongo.users.find_one({'_id': payload['username']})
-    projects = user['projects']
-    response = jsonify({'projects': projects}), 200
-    return response
+

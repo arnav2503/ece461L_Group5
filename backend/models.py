@@ -12,6 +12,7 @@ class Project (Document):
     start_date = DateTimeField()
     end_date = DateTimeField()
     hardware_list = DictField() # {hardware_id: resources checked out (int)} 
+    assigned_users = ListField(ReferenceField(User), default=list)
 
 # class HardwareResource (Document):
 #     id = StringField(required=True, unique=True)

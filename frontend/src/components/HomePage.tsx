@@ -3,12 +3,11 @@ import { AuthContext } from "@/components/AuthContext";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import LogoutButton from "./LogoutButton";
 import CreateProjectForm from "@/components/CreateProjectForm";
 
 function HomePage() {
   const { /* isAuthenticated,*/ setIsAuthenticated } = useContext(AuthContext);
-  const [username, setUsername] = useState(""); // Fix: Use correct syntax for useState hook
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
