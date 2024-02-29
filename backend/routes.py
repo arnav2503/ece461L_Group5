@@ -33,7 +33,7 @@ def login_required(f):
 @app.route('/api/signup', methods=['POST', 'OPTIONS'])
 def signup():
     if request.method == 'OPTIONS':
-        response = jsonify({'message': 'Preflight request successful'}), 200
+        response = "OK", 200
         return response
     
     username = request.json.get('username')
@@ -59,14 +59,14 @@ def login():
         response = jsonify({'message': 'Preflight request successful'}), 200
         return response
     
-    username = request.json.get('username')
+    username = request.json.get('username').toLowerCase()
     password = request.json.get('password')
 
     user = mongo.users.find_one({'_id': username})
     if user and compare_passwords(password, user['password_hash']):
         token = jwt.encode({ 
             'username': str(user['_id']),  # Assuming _id is your MongoDB ObjectID
-            'exp': datetime.utcnow() + timedelta(hours=24)  # Token expires in 24 hours
+            'exp': datetime.utcnow() + timedelta(seconds=30)  # Token expires in 24 hours
         }, app.config['SECRET_KEY'], algorithm='HS256')  # Use your app's secret key
 
         response = jsonify({'token': token}), 200
@@ -87,5 +87,10 @@ def get_user(payload):
     user = mongo.users.find_one({'_id': payload['username']})
     response = jsonify({'username': user['_id']}), 200
     return response
+
+@app.route('/api/get-project', method=['GET'])
+@login_required
+def get_project(payload):
+    username = mongo.projects.find_one({'_id': payload['username']})
 
 

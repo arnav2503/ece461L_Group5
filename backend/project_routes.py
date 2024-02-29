@@ -3,8 +3,8 @@ import datetime
 import pymongo
 from flask import jsonify, request
 
-from backend.auth_routes import login_required
-from backend.app import app, mongo
+from backend.routes import login_required
+from app import app, mongo
 
 
 @app.route('/api/create-project', methods=['POST'])
@@ -13,7 +13,7 @@ def create_project(payload):
     try:
         data = request.get_json()
         project_data = {
-            '_id': data['id'],
+            '_id': data['name'],
             'description': data['description'],
             'owner': payload['username'],
             'start_date': datetime.strptime(data['start_date'], '%Y-%m-%d'),
@@ -32,6 +32,7 @@ def create_project(payload):
             response = jsonify({'error': 'Project end date is required'}), 400
             return response
         
+        # for managing assignment see: https://docs.mongoengine.org/guide/defining-documents.html#many-to-many-with-listfields
         result = mongo.projects.insert_one(project_data)
         user = mongo.users.find_one({'_id': payload['username']})
         user['projects'].append(project_data['_id'])
