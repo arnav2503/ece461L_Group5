@@ -1,17 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import auth from "@/api/auth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import { cn } from "@/lib/utils";
+import auth from "../api/auth";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { useToast } from "./ui/use-toast";
 
-interface SignupFormProps {
-  className?: string;
-}
-
-const SignupForm = (props: SignupFormProps) => {
+const SignupForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(""); // Additional field
@@ -64,7 +59,7 @@ const SignupForm = (props: SignupFormProps) => {
   };
 
   return (
-    <div className={cn("container mx-auto", props.className)}>
+    <div className="container mx-auto">
       <div className="flex flex-col items-center py-12">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
