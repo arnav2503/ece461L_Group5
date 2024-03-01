@@ -66,7 +66,7 @@ const SignupForm = (props: SignupFormProps) => {
   return (
     <div className={cn("container mx-auto", props.className)}>
       <div className="flex flex-col items-center py-12">
-        <h2 className="text-2xl font-bold mb-4">Login</h2>
+        <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
           <Input
             placeholder="Username"
