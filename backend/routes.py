@@ -101,20 +101,21 @@ def create_project(payload):
 
     try:
         data = request.get_json()
+        print(type(data))
 
-        if not data['id']:
+        if 'id' not in data or not data['id']:
             response = jsonify({'error': 'Project ID is required'}), 400
             return response
-        if not data['name']:
+        if 'name' not in data or not data['name']:
             response = jsonify({'error': 'Project name is required'}), 400
             return response
-        if not data['description']:
+        if 'description' not in data or not data['description']:
             response = jsonify({'error': 'Project description is required'}), 400
             return response
-        if not data['start_date']:
+        if 'start_date' not in data or not data['start_date']:
             response = jsonify({'error': 'Project start date is required'}), 400
             return response
-        if not data['end_date']:
+        if 'end_date' not in data or not data['end_date']:
             response = jsonify({'error': 'Project end date is required'}), 400
             return response
         if data['start_date'] > data['end_date']:
