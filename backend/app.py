@@ -12,7 +12,7 @@ import certifi
 ca = certifi.where()
 
 # Connect to MongoDB
-client = MongoClient(app.config['MONGO_URI'], tlsCAFile=ca)
+client = MongoClient(app.config['MONGO_URI'])
 mongo = client.get_database("461l")
 
 from routes import * 

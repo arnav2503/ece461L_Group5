@@ -3,7 +3,7 @@ import jwt
 import pymongo
 from app import app, mongo
 from flask import request, jsonify
-from models import User  # Import the User model
+from models import Project, User  # Import the User model
 from utils import hash_password, compare_passwords  # Helper for password encryption
 from functools import wraps
 
@@ -11,6 +11,10 @@ from functools import wraps
 def login_required(f):
     @wraps(f)
     def secured_function(*args, **kwargs):
+        if request.method == 'OPTIONS':
+            response = "OK", 200
+            return response
+        
         token = request.headers.get('Authorization')
         if not token:
             response = jsonify({'error': 'Token is missing'}), 401
@@ -56,7 +60,7 @@ def signup():
 @app.route('/api/login', methods=['POST', 'OPTIONS'])
 def login():
     if request.method == 'OPTIONS':
-        response = jsonify({'message': 'Preflight request successful'}), 200
+        response = "OK", 200
         return response
     
     username = request.json.get('username')
@@ -66,7 +70,7 @@ def login():
     if user and compare_passwords(password, user['password_hash']):
         token = jwt.encode({ 
             'username': str(user['_id']),  # Assuming _id is your MongoDB ObjectID
-            'exp': datetime.utcnow() + timedelta(seconds=30)  # Token expires in 24 hours
+            'exp': datetime.utcnow() + timedelta(hours=24)  # Token expires in 24 hours
         }, app.config['SECRET_KEY'], algorithm='HS256')  # Use your app's secret key
 
         response = jsonify({'token': token}), 200
@@ -88,10 +92,58 @@ def get_user(payload):
     response = jsonify({'username': user['_id']}), 200
     return response
 
-# @app.route('/api/get-project', method=['GET'])
-# @login_required
-# def get_project(payload):
-#     username = mongo.projects.find_one({'_id': payload['username']})
+@app.route('/api/create-project', methods=['POST', 'OPTIONS'])
+@login_required
+def create_project(payload):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    try:
+        data = request.get_json()
+
+        if not data['id']:
+            response = jsonify({'error': 'Project ID is required'}), 400
+            return response
+        if not data['name']:
+            response = jsonify({'error': 'Project name is required'}), 400
+            return response
+        if not data['description']:
+            response = jsonify({'error': 'Project description is required'}), 400
+            return response
+        if not data['start_date']:
+            response = jsonify({'error': 'Project start date is required'}), 400
+            return response
+        if not data['end_date']:
+            response = jsonify({'error': 'Project end date is required'}), 400
+            return response
+        if data['start_date'] > data['end_date']:
+            response = jsonify({'error': 'Project start date cannot be after the end date'}), 400
+            return response
+
+        hardware_list = dict()
+        for resource in mongo.resources.objects.find():
+            hardware_list[resource] = 0
+
+        project = Project(
+            id = data['id'],
+            name = data['name'],
+            description = data['description'],
+            owner = mongo.users.find_one({'_id': payload['username']}),
+            start_date = data['start_date'],
+            end_date = data['end_date'],
+            hardware_list = hardware_list,
+            assigned_users = []
+        )
+        mongo.projects.insert_one(project.to_mongo())
+        response = jsonify({'message': 'Project created successfully'}), 201
+        return response
+    except pymongo.errors.DuplicateKeyError:
+        response = jsonify({'error': 'A project with that ID already exists'}), 409
+        return response
+    except Exception as e:
+        response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
+        return response
 
 # # Project Routes
 # @app.route('/api/create-project', methods=['POST'])

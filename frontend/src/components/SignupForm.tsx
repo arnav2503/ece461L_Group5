@@ -32,8 +32,7 @@ const SignupForm = (props: SignupFormProps) => {
 
     setIsLoading(true);
     try {
-      const response = await auth.signup(username, password);
-      console.log("Signup successful:", response);
+      await auth.signup(username, password);
       navigate("/login");
     } catch (error) {
       if (axios.isAxiosError(error)) {
