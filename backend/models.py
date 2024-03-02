@@ -7,6 +7,7 @@ class User(Document):
 
 class Project (Document):
     id = StringField(required=True, unique=True, primary_key=True)
+    name = StringField()
     description = StringField()
     owner = ReferenceField(User) 
     start_date = DateTimeField()

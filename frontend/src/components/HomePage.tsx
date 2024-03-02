@@ -5,9 +5,10 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateProjectForm from "@/components/CreateProjectForm";
 import LogoutButton from "@/components/LogoutButton";
+import { Toaster } from "@/components/ui/toaster";
 
 function HomePage() {
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
@@ -15,7 +16,6 @@ function HomePage() {
     const fetchUser = async () => {
       try {
         const user = await auth.getUser();
-        console.log("User:", user);
         setUsername(user.username);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -43,6 +43,7 @@ function HomePage() {
       <LogoutButton className="mt-6" variant={"destructive"}>
         Logout
       </LogoutButton>
+      <Toaster />
     </>
   );
 }
