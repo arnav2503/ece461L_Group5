@@ -18,6 +18,7 @@ def login_required(f):
         token = request.headers.get('Authorization')
         if not token:
             response = jsonify({'error': 'Token is missing'}), 401
+            print('Missing token')
             return response
 
         try:
@@ -27,8 +28,10 @@ def login_required(f):
             return f(*args, **kwargs)
         except jwt.ExpiredSignatureError:
             response = jsonify({'error': 'Token has expired'}), 401
+            print('Token has expired')
         except jwt.InvalidTokenError:
             response = jsonify({'error': 'Invalid token'}), 401
+            print('Invalid token')
 
         return response
 
@@ -89,7 +92,7 @@ def validate_token():
 @login_required
 def get_user(payload):
     user = mongo.users.find_one({'_id': payload['username']})
-    response = jsonify({'username': user['_id']}), 200
+    response = user, 200
     return response
 
 @app.route('/api/create-project', methods=['POST', 'OPTIONS'])
@@ -101,7 +104,6 @@ def create_project(payload):
 
     try:
         data = request.get_json()
-        print(type(data))
 
         if 'id' not in data or not data['id']:
             response = jsonify({'error': 'Project ID is required'}), 400
@@ -130,13 +132,14 @@ def create_project(payload):
             id = data['id'],
             name = data['name'],
             description = data['description'],
-            owner = mongo.users.find_one({'_id': payload['username']}),
+            owner = payload['username'],
             start_date = data['start_date'],
             end_date = data['end_date'],
             hardware_list = hardware_list,
             assigned_users = []
         )
         mongo.projects.insert_one(project.to_mongo())
+        mongo.users.find_one_and_update({'_id': payload['username']}, {'$push': {'project_list': data['id']}})
         response = jsonify({'message': 'Project created successfully'}), 201
         return response
     except pymongo.errors.DuplicateKeyError:

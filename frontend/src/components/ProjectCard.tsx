@@ -1,82 +1,78 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
 interface ProjectProps {
   id: string;
+  name: string;
   owner: string;
   description: string;
-  startDate: string; // Or a Date object if you prefer
-  endDate: string; // Or a Date object if you prefer
-  onDelete: (projectId: string) => void;
-  onUnassign: (projectId: string) => void;
-  isCurrentUserOwner: boolean;
+  startDate: string;
+  endDate: string;
   resourcesUsed: number;
   resourcesCapacity: number;
 }
 
-const ProjectCard = ({
-  id,
-  owner,
-  isCurrentUserOwner,
-  description,
-  startDate,
-  endDate,
-  onDelete,
-  onUnassign,
-  resourcesUsed,
-  resourcesCapacity,
-}: ProjectProps) => {
+const ProjectCard = (props: ProjectProps) => {
+  const { userID } = useContext(AuthContext);
+
   const calculateProgress = () => {
-    // TODO: Implement the logic to calculate the progress
-    return 10;
+    const start = new Date(props.startDate);
+    const end = new Date(props.endDate);
+    const now = new Date();
+    const total = end.getTime() - start.getTime();
+    const elapsed = now.getTime() - start.getTime();
+    return (elapsed / total) * 100;
+  };
+
+  const onRemove = (id: string) => {
+    if (userID === props.owner) {
+      // // project_management.deleteProject(id);
+      // TODO: Implement deleteProject
+    } else {
+      // // project_management.leaveProject(id);
+      // TODO: Implement leaveProject
+    }
   };
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
       <p className="text-xl text-left">
-        Project <strong className="font-semibold">{id}</strong>
+        Project: <strong className="font-semibold">{props.name}</strong>
       </p>
+      <p className="text-sm text-gray-600 mb-2 text-left">{props.id}</p>
       <p className="text-sm text-gray-700 mb-2 text-left">
-        Created by <strong className="font-semibold">{owner}</strong>
+        Created by <strong className="font-semibold">{props.owner}</strong>
       </p>
       <Separator />
-      <p className="text-sm text-gray-600 my-2 text-left">{description}</p>
+      <p className="text-sm text-gray-600 my-2 text-left">
+        {props.description}
+      </p>
       <Separator />
       <div className="flex justify-between my-2">
-        {" "}
-        {/* Container for resources */}
         <span className="font-semibold">
           Resources Used:{" "}
           <span className="font-normal">
-            {resourcesUsed} / {resourcesCapacity}
+            {props.resourcesUsed} / {props.resourcesCapacity}
           </span>
         </span>
       </div>
       <div className="flex flex-col items-center mb-4">
-        {" "}
-        {/* Column layout */}
         <div className="flex justify-between w-full mt-2">
-          {" "}
-          {/* Dates in a row */}
-          <small className="text-gray-600 ">{startDate}</small>
-          <small className="text-gray-600 ">{endDate}</small>
+          <small className="text-gray-600 ">{props.startDate}</small>
+          <small className="text-gray-600 ">{props.endDate}</small>
         </div>
         <Progress value={calculateProgress()} className="w-full" />
       </div>
       <div className="flex justify-between">
-        {isCurrentUserOwner ? (
-          <Button variant="destructive" onClick={() => onDelete(id)}>
-            Delete
-          </Button>
-        ) : (
-          <Button variant="destructive" onClick={() => onUnassign(id)}>
-            Unassign
-          </Button>
-        )}
+        <Button variant="destructive" onClick={() => onRemove(props.id)}>
+          {userID === props.owner ? "Delete" : "Unassign"}
+        </Button>
         <Button>
-          <Link to={`/projects/${id}/manage`}>Manage</Link>
+          <Link to={`/projects/${props.id}/manage`}>Manage</Link>
         </Button>
       </div>
     </div>

@@ -1,45 +1,18 @@
-import auth from "@/api/auth";
 import { AuthContext } from "@/components/AuthContext";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import CreateProjectForm from "@/components/CreateProjectForm";
 import LogoutButton from "@/components/LogoutButton";
 import { Toaster } from "@/components/ui/toaster";
+import { useContext } from "react";
+import TestProjectCards from "./debug_component/TestProjectCard";
 
 function HomePage() {
-  const { setIsAuthenticated } = useContext(AuthContext);
-  const [username, setUsername] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = await auth.getUser();
-        setUsername(user.username);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          if (error.response) {
-            if (error.response.status === 401) {
-              auth.logout();
-              setIsAuthenticated(false);
-              navigate("/login");
-            }
-          } else {
-            console.error("Network error. Please try again.");
-          }
-        } else {
-          console.error("An unexpected error occurred:", error);
-        }
-      }
-    };
-    fetchUser();
-  }, []);
+  const { userID } = useContext(AuthContext);
 
   return (
     <>
-      <h1>Welcome, {username}!</h1>
+      <h1>Welcome, {userID}!</h1>
       <CreateProjectForm />
+      <TestProjectCards />
       <LogoutButton className="mt-6" variant={"destructive"}>
         Logout
       </LogoutButton>
