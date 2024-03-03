@@ -112,22 +112,24 @@ function CreateProjectForm(props: CreateProjectFormProps) {
             )}
             onChange={(event) => setDescription(event.target.value)}
           />
-          <DateRangeSelector
+          <DateRangeSelector 
             onDateChange={(date) => setDateRange(date)}
             className={cn(
               "mb-4 w-full",
               isLoading && "cursor-not-allowed opacity-50"
             )}
           />
-          <Button
-            type="submit"
-            className={cn(
-              "mb-4 w-full",
-              isLoading && "cursor-not-allowed opacity-50"
-            )}
-          >
-            Create Project
-          </Button>
+          <div className="flex flex-row-reverse justify-between w-full">
+            <Button
+              type="submit"
+              className={cn("", isLoading && "cursor-not-allowed opacity-50")}
+            >
+              Create Project
+            </Button>
+            <Button variant={"destructive"} onClick={() => navigate("/")}>
+              Cancel
+            </Button>
+          </div>
         </form>
       </div>
     </>
