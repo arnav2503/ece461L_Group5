@@ -72,7 +72,7 @@ const ProjectCard = (props: ProjectProps) => {
           {userID === props.owner ? "Delete" : "Unassign"}
         </Button>
         <Button>
-          <Link to={`/projects/${props.id}/manage`}>Manage</Link>
+          <Link to={`/projects/${props.id}`}>Manage</Link>
         </Button>
       </div>
     </div>
