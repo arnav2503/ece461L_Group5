@@ -1,5 +1,5 @@
 import { AuthContext } from "@/components/AuthContext";
-import CreateProjectForm from "@/components/CreateProjectForm";
+import CreateProjectButton from "@/components/CreateProjectButton";
 import LogoutButton from "@/components/LogoutButton";
 import { Toaster } from "@/components/ui/toaster";
 import { useContext } from "react";
@@ -11,7 +11,7 @@ function HomePage() {
   return (
     <>
       <h1>Welcome, {userID}!</h1>
-      <CreateProjectForm />
+      <CreateProjectButton />
       <TestProjectCards />
       <LogoutButton className="mt-6" variant={"destructive"}>
         Logout

@@ -10,6 +10,7 @@ import axios from "axios";
 import { addDays } from "date-fns";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
+import { useNavigate } from "react-router-dom";
 
 interface CreateProjectFormProps {
   className?: string;
@@ -25,6 +26,7 @@ function CreateProjectForm(props: CreateProjectFormProps) {
   });
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -46,6 +48,7 @@ function CreateProjectForm(props: CreateProjectFormProps) {
         description: "The project has been created successfully.",
         variant: "default",
       });
+      navigate(`/projects/${id}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {

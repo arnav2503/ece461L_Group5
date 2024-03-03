@@ -1,5 +1,6 @@
 import "@/App.css";
 import { AuthContextProvider } from "@/components/AuthContext";
+import CreateProjectPage from "@/components/CreateProjectPage";
 import HomePage from "@/components/HomePage";
 import LoginPage from "@/components/LoginPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -17,6 +18,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create-project"
+              element={
+                <ProtectedRoute>
+                  <CreateProjectPage />
                 </ProtectedRoute>
               }
             />
