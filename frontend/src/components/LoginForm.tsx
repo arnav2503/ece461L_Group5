@@ -18,7 +18,7 @@ const LoginForm = (props: LoginFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { setIsAuthenticated } = React.useContext(AuthContext);
+  const { setIsAuthenticated, setUserID } = React.useContext(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,6 +27,7 @@ const LoginForm = (props: LoginFormProps) => {
     try {
       await auth.login(username, password);
       setIsAuthenticated(true);
+      setUserID(username);
       navigate("/"); // Redirect to home page
     } catch (error) {
       if (axios.isAxiosError(error)) {

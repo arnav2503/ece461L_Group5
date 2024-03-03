@@ -1,5 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import auth from "../api/auth.ts";
+import axios from "axios";
+import { set } from "date-fns";
 
 // Updated interface to include userID and its setter
 interface AuthContextType {
@@ -32,9 +34,21 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     checkAuth().then((isLoggedIn) => {
       if (isLoggedIn) {
-        auth.getUser().then((user) => {
-          setUserID(user._id);
-        });
+        try {
+          auth.getUser().then((user) => {
+            setUserID(user._id);
+          });
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            if (error.response) {
+              setIsAuthenticated(false);
+              setUserID(null);
+              localStorage.removeItem("auth_token");
+            } else {
+              console.error("Network Error");
+            }
+          }
+        }
       }
       setIsLoading(false);
     });
