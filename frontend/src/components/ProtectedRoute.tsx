@@ -1,7 +1,7 @@
-// components/ProtectedRoute.tsx
+import { AuthContext } from "@/components/AuthContext";
+
 import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useContext(AuthContext);

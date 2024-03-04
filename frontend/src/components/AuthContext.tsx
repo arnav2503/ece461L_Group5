@@ -1,6 +1,7 @@
-import React, { createContext, useEffect, useState } from "react";
-import auth from "../api/auth.ts";
+import auth from "@/api/auth";
+
 import axios from "axios";
+import React, { createContext, useEffect, useState } from "react";
 
 // Updated interface to include userID and its setter
 interface AuthContextType {

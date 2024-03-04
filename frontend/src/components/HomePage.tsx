@@ -1,8 +1,9 @@
 import { AuthContext } from "@/components/AuthContext";
 import NavigationBar from "@/components/NavigationBar";
+import TestProjectCards from "@/components/debug_component/TestProjectCard";
 import { Toaster } from "@/components/ui/toaster";
+
 import { useContext } from "react";
-import TestProjectCards from "./debug_component/TestProjectCard";
 
 function HomePage() {
   const { userID } = useContext(AuthContext);

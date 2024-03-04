@@ -1,18 +1,13 @@
+import { AuthContext } from "@/components/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+
+import { MixerVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
+import { Database, FlaskConical, User, UserMinus } from "lucide-react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
-import { cn } from "@/lib/utils";
-import { MixerVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
-import {
-  Database,
-  Fingerprint,
-  FlaskConical,
-  User,
-  UserMinus,
-} from "lucide-react";
 
 interface ProjectProps {
   id: string;

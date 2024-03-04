@@ -1,5 +1,5 @@
-import CreateProjectForm from "./CreateProjectForm";
-import { Toaster } from "./ui/toaster";
+import CreateProjectForm from "@/components/CreateProjectForm";
+import { Toaster } from "@/components/ui/toaster";
 
 function CreateProjectPage() {
   return (

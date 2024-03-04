@@ -1,7 +1,7 @@
-import CreateProjectButton from "./CreateProjectButton";
-import JoinProjectButton from "./JoinProjectButton";
-import LogoutButton from "./LogoutButton";
-import { ModeToggle } from "./ModeToggle";
+import CreateProjectButton from "@/components/CreateProjectButton";
+import JoinProjectButton from "@/components/JoinProjectButton";
+import LogoutButton from "@/components/LogoutButton";
+import { ModeToggle } from "@/components/ModeToggle";
 
 function NavigationBar() {
   return (

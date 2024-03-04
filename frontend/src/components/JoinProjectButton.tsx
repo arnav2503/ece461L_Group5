@@ -1,7 +1,8 @@
+import { cn } from "@/lib/utils";
+
+import { UsersIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import { cn } from "@/lib/utils";
-import { UsersIcon } from "lucide-react";
 
 interface JoinProjectButtonProps {
   className?: string;

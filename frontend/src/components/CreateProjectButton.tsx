@@ -1,7 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
-import { PlusIcon } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+import { PlusIcon } from "@radix-ui/react-icons";
+import { useNavigate } from "react-router-dom";
 
 interface CreateProjectButtonProps {
   className?: string;

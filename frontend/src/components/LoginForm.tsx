@@ -1,12 +1,13 @@
+import auth from "@/api/auth";
+import { AuthContext } from "@/components/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
+
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import auth from "../api/auth";
-import { AuthContext } from "./AuthContext";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { useToast } from "./ui/use-toast";
-import { cn } from "@/lib/utils";
 
 interface LoginFormProps {
   className?: string;
