@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import { PlusIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import { UsersIcon } from "lucide-react";
 
-interface CreateProjectButtonProps {
+interface JoinProjectButtonProps {
   className?: string;
 }
 
-const CreateProjectButton = (props: CreateProjectButtonProps) => {
+const JoinProjectButton = (props: JoinProjectButtonProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/create-project");
+    navigate("/join-project");
   };
 
   return (
@@ -20,10 +20,10 @@ const CreateProjectButton = (props: CreateProjectButtonProps) => {
       variant={"outline"}
       onClick={handleClick}
     >
-      <PlusIcon className="mr-2" />
-      Create New Project
+      <UsersIcon className="mr-2 size-4" />
+      Join Existing Project
     </Button>
   );
 };
 
-export default CreateProjectButton;
+export default JoinProjectButton;
