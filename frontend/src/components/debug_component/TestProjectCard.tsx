@@ -22,11 +22,31 @@ const TestProjectCards = () => {
       resourcesUsed: 10,
       resourcesCapacity: 50,
     },
+    {
+      id: "project-03",
+      name: "Machine Learning",
+      owner: "Charlie",
+      description: "A machine learning project.",
+      startDate: "2024-02-01",
+      endDate: "2026-12-31",
+      resourcesUsed: 20,
+      resourcesCapacity: 100,
+    },
+    {
+      id: "project-04",
+      name: "Mobile App Development",
+      owner: "armaan",
+      description: "A mobile app development project.",
+      startDate: "2023-12-01",
+      endDate: "2024-06-30",
+      resourcesUsed: 40,
+      resourcesCapacity: 100,
+    },
   ];
 
   return (
     <div className="container mx-auto my-5">
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-3 gap-2">
         {sampleProjects.map((project) => (
           <ProjectCard key={project.id} {...project} />
         ))}
