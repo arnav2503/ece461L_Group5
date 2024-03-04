@@ -25,7 +25,7 @@ const TestProjectCards = () => {
   ];
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto my-5">
       <div className="grid grid-cols-2 gap-6">
         {sampleProjects.map((project) => (
           <ProjectCard key={project.id} {...project} />
