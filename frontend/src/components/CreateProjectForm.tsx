@@ -80,7 +80,7 @@ function CreateProjectForm(props: CreateProjectFormProps) {
     <>
       <div
         className={cn(
-          "container flex flex-col items-center justify-center",
+          "flex flex-col items-center justify-center",
           props.className
         )}
       >
@@ -112,7 +112,7 @@ function CreateProjectForm(props: CreateProjectFormProps) {
             )}
             onChange={(event) => setDescription(event.target.value)}
           />
-          <DateRangeSelector 
+          <DateRangeSelector
             onDateChange={(date) => setDateRange(date)}
             className={cn(
               "mb-4 w-full",

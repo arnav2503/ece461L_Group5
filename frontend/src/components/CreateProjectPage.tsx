@@ -4,7 +4,7 @@ import { Toaster } from "./ui/toaster";
 function CreateProjectPage() {
   return (
     <>
-      <CreateProjectForm />
+      <CreateProjectForm className="p-10" />
       <Toaster />
     </>
   );

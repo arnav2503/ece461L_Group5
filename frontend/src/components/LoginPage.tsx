@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 function LoginPage() {
   return (
     <>
-      <LoginForm />
+      <LoginForm className="p-10" />
       <Toaster />
     </>
   );
