@@ -15,7 +15,7 @@ const TestProjectCards = () => {
     {
       id: "project-02",
       name: "Data Analysis",
-      owner: "Bob",
+      owner: "arnav",
       description: "Data analysis and visualization.",
       startDate: "2023-11-18",
       endDate: "2023-12-31",
@@ -25,7 +25,7 @@ const TestProjectCards = () => {
     {
       id: "project-03",
       name: "Machine Learning",
-      owner: "Charlie",
+      owner: "wasay",
       description: "A machine learning project.",
       startDate: "2024-02-01",
       endDate: "2026-12-31",
@@ -35,7 +35,7 @@ const TestProjectCards = () => {
     {
       id: "project-04",
       name: "Mobile App Development",
-      owner: "armaan",
+      owner: "fahim",
       description: "A mobile app development project.",
       startDate: "2023-12-01",
       endDate: "2024-06-30",

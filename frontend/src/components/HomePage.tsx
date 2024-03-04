@@ -1,12 +1,8 @@
 import { AuthContext } from "@/components/AuthContext";
-import CreateProjectButton from "@/components/CreateProjectButton";
-import LogoutButton from "@/components/LogoutButton";
+import NavigationBar from "@/components/NavigationBar";
 import { Toaster } from "@/components/ui/toaster";
 import { useContext } from "react";
 import TestProjectCards from "./debug_component/TestProjectCard";
-import { ModeToggle } from "./ModeToggle";
-import JoinProjectButton from "./JoinProjectButton";
-import { HomeIcon } from "@radix-ui/react-icons";
 
 function HomePage() {
   const { userID } = useContext(AuthContext);
@@ -24,17 +20,7 @@ function HomePage() {
         </p>
       </div>
 
-      {/* Navigation */}
-      <div className="flex m-2 items-center w-full flex-grow justify-between">
-        <div className="space-x-3 items-center flex justify-center">
-          <CreateProjectButton />
-          <JoinProjectButton />
-        </div>
-        <div className="space-x-3 items-center flex justify-center">
-          <ModeToggle />
-          <LogoutButton variant={"destructive"}>Logout</LogoutButton>
-        </div>
-      </div>
+      <NavigationBar />
 
       {/* View Projects */}
       <TestProjectCards />
