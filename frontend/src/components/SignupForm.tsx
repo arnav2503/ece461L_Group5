@@ -1,66 +1,28 @@
-import auth from "@/api/auth";
+import { useAuth } from "@/components/AuthContext";
+import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 
-import axios from "axios";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface SignupFormProps {
   className?: string;
 }
 
 const SignupForm = (props: SignupFormProps) => {
+  const auth = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(""); // Additional field
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      toast({
-        title: "Signup failed",
-        description: "Passwords do not match",
-        variant: "destructive",
-      });
-      return; // Early exit
-    }
-
     setIsLoading(true);
-    try {
-      await auth.signup(username, password);
-      navigate("/login");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          toast({
-            title: "Signup failed",
-            description: error.response.data.error,
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Signup failed",
-            description: "Network error. Please try again.",
-            variant: "destructive",
-          });
-        }
-      } else {
-        console.error("Unexpected error during signup:", error); // Log for debugging
-        toast({
-          title: "Signup failed",
-          description: "An unexpected error occurred. Please try again.",
-          variant: "destructive",
-        });
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    await auth.signup(username, password, confirmPassword);
+    setIsLoading(false);
   };
 
   return (
@@ -75,6 +37,7 @@ const SignupForm = (props: SignupFormProps) => {
               setUsername(e.target.value)
             }
             className="mb-1"
+            disabled={isLoading}
             required
           />
 
@@ -86,6 +49,7 @@ const SignupForm = (props: SignupFormProps) => {
               setPassword(e.target.value)
             }
             className="mb-1"
+            disabled={isLoading}
             required
           />
 
@@ -101,6 +65,7 @@ const SignupForm = (props: SignupFormProps) => {
           />
           <div className="flex flex-row-reverse justify-between align-middle mt-4">
             <Button type="submit" className="" disabled={isLoading}>
+              <Spinner size={15} disabled={!isLoading} />
               Sign Up
             </Button>
             <Link to="/login">

@@ -1,70 +1,156 @@
 import auth from "@/api/auth";
+import { toast } from "@/components/ui/use-toast";
 
 import axios from "axios";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Updated interface to include userID and its setter
 interface AuthContextType {
   isAuthenticated: boolean;
-  setIsAuthenticated: (value: boolean) => void;
   userID: string | null; // Assuming userID is a string. Use null when there's no user.
-  setUserID: (id: string | null) => void;
+  login: (username: string, password: string) => void;
+  signup: (username: string, password: string, confirmPassword: string) => void;
+  logout: () => void;
+  loading: boolean;
 }
 
 // Default values for the context, including userID and its setter
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
-  setIsAuthenticated: () => {},
   userID: null,
-  setUserID: () => {},
+  login: () => {},
+  signup: () => {},
+  logout: () => {},
+  loading: true,
 });
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userID, setUserID] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const checkAuth = async () => {
-    setIsLoading(true);
-    const isLoggedIn = auth.isLoggedIn();
-    setIsAuthenticated(isLoggedIn);
-    return isLoggedIn;
-  };
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    checkAuth().then((isLoggedIn) => {
-      if (isLoggedIn) {
-        try {
-          auth.getUser().then((user) => {
-            setUserID(user._id);
-          });
-        } catch (error) {
-          if (axios.isAxiosError(error)) {
-            if (error.response) {
-              setIsAuthenticated(false);
-              setUserID(null);
-              localStorage.removeItem("auth_token");
-            } else {
-              console.error("Network Error");
-            }
+    const checkAuth = async () => {
+      try {
+        const user = await auth.getUser();
+        setIsAuthenticated(true);
+        setUserID(user._id);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 401) {
+            setIsAuthenticated(false);
+            setUserID(null);
           }
+        } else {
+          console.error("Unexpected error during authentication check:", error); // Log for debugging
         }
       }
-      setIsLoading(false);
-    });
+    };
+    setLoading(true);
+    checkAuth().finally(() => setLoading(false));
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const signup = async (
+    username: string,
+    password: string,
+    confirmPassword: string
+  ) => {
+    if (password !== confirmPassword) {
+      toast({
+        title: "Signup failed",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
+      return; // Early exit
+    }
+
+    try {
+      await auth.signup(username, password);
+      navigate("/login");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast({
+            title: "Signup failed",
+            description: error.response.data.error,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Signup failed",
+            description: "Network error. Please try again.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        console.error("Unexpected error during signup:", error); // Log for debugging
+        toast({
+          title: "Signup failed",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const login = async (username: string, password: string) => {
+    try {
+      await auth.login(username, password);
+      setIsAuthenticated(true);
+      setUserID(username);
+      navigate("/");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast({
+            title: "Login Failed",
+            description: error.response.data.error,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Network Error",
+            description: "Please try again.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        console.error("Unexpected error during login:", error); // Log for debugging
+      }
+    }
+  };
+
+  const logout = () => {
+    auth.logout();
+    setIsAuthenticated(false);
+    setUserID(null);
+    navigate("/login");
+  };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, userID, setUserID }}
+      value={{
+        isAuthenticated,
+        userID,
+        login: login,
+        signup: signup,
+        logout: logout,
+        loading,
+      }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export { AuthContext, AuthContextProvider };
+const useAuth = () => {
+  const auth = useContext(AuthContext);
+  if (!auth) {
+    throw new Error("useAuth must be used within an AuthContextProvider");
+  }
+  return auth;
+};
+
+export { AuthContext, AuthContextProvider, useAuth };

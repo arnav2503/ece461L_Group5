@@ -1,4 +1,4 @@
-import { AuthContext } from "@/components/AuthContext";
+import { useAuth } from "@/components/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 
 import { MixerVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
 import { Database, FlaskConical, User, UserMinus } from "lucide-react";
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 
 interface ProjectProps {
@@ -21,7 +20,7 @@ interface ProjectProps {
 }
 
 const ProjectCard = (props: ProjectProps) => {
-  const { userID } = useContext(AuthContext);
+  const auth = useAuth();
 
   const calculateProgress = () => {
     const start = new Date(props.startDate);
@@ -39,7 +38,7 @@ const ProjectCard = (props: ProjectProps) => {
   };
 
   const onRemove = (id: string) => {
-    if (userID === props.owner) {
+    if (auth.userID === props.owner) {
       // // project_management.deleteProject(id);
       // TODO: Implement deleteProject
     } else {
@@ -91,7 +90,7 @@ const ProjectCard = (props: ProjectProps) => {
           className="flex flex-row items-center"
           onClick={() => onRemove(props.id)}
         >
-          {userID === props.owner ? (
+          {auth.userID === props.owner ? (
             <>
               <TrashIcon className="mr-2" />
               Delete
