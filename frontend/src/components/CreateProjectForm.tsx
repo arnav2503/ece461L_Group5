@@ -87,7 +87,6 @@ function CreateProjectForm(props: CreateProjectFormProps) {
           props.className
         )}
       >
-        <h2 className="text-2xl font-bold mb-4">Create Project</h2>
         <form onSubmit={handleSubmit} className="">
           <Input
             placeholder="Project ID"

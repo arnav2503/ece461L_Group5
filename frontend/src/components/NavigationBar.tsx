@@ -2,12 +2,14 @@ import CreateProjectButton from "@/components/CreateProjectButton";
 import JoinProjectButton from "@/components/JoinProjectButton";
 import LogoutButton from "@/components/LogoutButton";
 import { ModeToggle } from "@/components/ModeToggle";
-import UserProfileButton from "./UserProfileButton";
+import HomeButton from "@/components/HomeButton";
+import UserProfileButton from "@/components/UserProfileButton";
 
 function NavigationBar() {
   return (
-    <div className="flex m-2 items-center w-full flex-grow justify-between">
+    <div className="flex items-center w-full flex-grow justify-between p-5 bg-stone-100 dark:bg-stone-900 rounded-2xl">
       <div className="space-x-3 items-center flex justify-center">
+        <HomeButton />
         <CreateProjectButton />
         <JoinProjectButton />
       </div>

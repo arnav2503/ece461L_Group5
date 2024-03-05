@@ -1,31 +1,15 @@
-import { AuthContext } from "@/components/AuthContext";
-import NavigationBar from "@/components/NavigationBar";
+import { useAuth } from "@/components/AuthContext";
 import TestProjectCards from "@/components/debug_component/TestProjectCard";
 import { Toaster } from "@/components/ui/toaster";
-
-import { useContext } from "react";
+import PageHeader from "./PageHeader";
 
 function HomePage() {
-  const { userID } = useContext(AuthContext);
+  const auth = useAuth();
 
   return (
     <>
-      {/* Welcome message */}
-      <div className="flex flex-row justify-center align-baseline items-baseline">
-        <p className=" text-3xl font-light">
-          Welcome,{" "}
-          <span className="font-bold dark:text-cyan-400 text-cyan-900">
-            {userID}
-          </span>
-          !
-        </p>
-      </div>
-
-      <NavigationBar />
-
-      {/* View Projects */}
+      <PageHeader em={auth.userID} after={"'s Projects"} />
       <TestProjectCards />
-
       <Toaster />
     </>
   );

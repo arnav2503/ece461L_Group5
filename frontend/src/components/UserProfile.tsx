@@ -1,5 +1,6 @@
 import { useAuth } from "@/components/AuthContext";
 import Spinner from "@/components/Spinner";
+import PageHeader from "./PageHeader";
 
 function UserProfile() {
   const auth = useAuth();
@@ -10,10 +11,10 @@ function UserProfile() {
 
   return (
     <div>
-      <h1>User Profile</h1>
-      <p>Username: {auth.user._id}</p>
+      <PageHeader em={auth.userID} after={"'s Profile"} />
+      <p>Username: {auth.userID}</p>
       <div>
-        <span>Projects: </span>
+        <span>Assigned Projects: </span>
         {auth.user.project_list.length > 0 ? (
           <ul>
             {auth.user.project_list.map((project, index) => (

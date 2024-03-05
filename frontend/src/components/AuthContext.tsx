@@ -2,7 +2,6 @@ import auth from "@/api/auth";
 import { toast } from "@/components/ui/use-toast";
 
 import axios from "axios";
-import { set } from "date-fns";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -140,6 +139,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       await auth.login(username, password);
       setIsAuthenticated(true);
       setUserID(username);
+      load();
       navigate("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
