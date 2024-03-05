@@ -1,6 +1,7 @@
-import { useAuth } from "@/components/AuthContext";
 import project_management from "@/api/project_management";
+import { useAuth } from "@/components/AuthContext";
 import { DateRangeSelector } from "@/components/DateRangeSelector";
+import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -95,6 +96,7 @@ function CreateProjectForm(props: CreateProjectFormProps) {
               isLoading && "cursor-not-allowed opacity-50"
             )}
             onChange={(event) => setId(event.target.value)}
+            disabled={isLoading}
             required
           />
           <Input
@@ -104,6 +106,7 @@ function CreateProjectForm(props: CreateProjectFormProps) {
               isLoading && "cursor-not-allowed opacity-50"
             )}
             onChange={(event) => setName(event.target.value)}
+            disabled={isLoading}
             required
           />
           <Textarea
@@ -113,6 +116,7 @@ function CreateProjectForm(props: CreateProjectFormProps) {
               isLoading && "cursor-not-allowed opacity-50"
             )}
             onChange={(event) => setDescription(event.target.value)}
+            disabled={isLoading}
           />
           <DateRangeSelector
             onDateChange={(date) => setDateRange(date)}
@@ -120,12 +124,15 @@ function CreateProjectForm(props: CreateProjectFormProps) {
               "mb-4 w-full",
               isLoading && "cursor-not-allowed opacity-50"
             )}
+            disabled={isLoading}
           />
           <div className="flex flex-row-reverse justify-between w-full">
             <Button
               type="submit"
               className={cn("", isLoading && "cursor-not-allowed opacity-50")}
+              disabled={isLoading}
             >
+              <Spinner size={15} disabled={!isLoading} />
               Create Project
             </Button>
             <Button variant={"destructive"} onClick={() => navigate("/")}>

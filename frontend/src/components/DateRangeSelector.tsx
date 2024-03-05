@@ -15,6 +15,7 @@ import { DateRange } from "react-day-picker";
 interface DateRangeProps {
   className?: string;
   onDateChange: (date: DateRange | undefined) => void;
+  disabled?: boolean;
 }
 interface DateRangeSelectorState {
   date: DateRange | undefined;
@@ -48,6 +49,7 @@ export class DateRangeSelector extends React.Component<
                 "w-[300px] justify-start text-left font-normal",
                 !this.state.date && "text-muted-foreground"
               )}
+              disabled={this.props.disabled}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
               {this.state.date?.from ? (
