@@ -13,19 +13,26 @@ import { PersonIcon } from "@radix-ui/react-icons";
 import { LogOut, UserCog } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-function AccountManageButton() {
+interface AccountManageButtonProps {
+  className?: string;
+}
+
+function AccountManageButton(props: AccountManageButtonProps) {
   const auth = useAuth();
   const navigate = useNavigate();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className={cn("align-middle")} variant={"outline"}>
+        <Button
+          className={cn("align-middle", props.className)}
+          variant={"outline"}
+        >
           <PersonIcon className="mr-2" />
           {auth.userID}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="">
         <DropdownMenuItem
           className="justify-center p-2 hover:cursor-pointer"
           onClick={() => navigate("/profile")}
@@ -37,7 +44,7 @@ function AccountManageButton() {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="bg-destructive text-destructive-foreground hover:bg-destructive/90 p-2 justify-center hover:cursor-pointer"
+          className="bg-destructive text-destructive-foreground p-2 justify-center hover:cursor-pointer border-destructive"
           onClick={auth.logout}
         >
           <LogOut className="size-4 mr-2" />

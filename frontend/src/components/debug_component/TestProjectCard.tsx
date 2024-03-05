@@ -1,4 +1,6 @@
 import ProjectCard from "@/components/ProjectCard";
+import { cn } from "@/lib/utils";
+import { useMediaQuery } from "react-responsive";
 
 const TestProjectCards = () => {
   const sampleProjects = [
@@ -44,9 +46,16 @@ const TestProjectCards = () => {
     },
   ];
 
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 970px)" });
+
   return (
     <div className="container mx-auto my-5">
-      <div className="grid grid-cols-3 gap-2">
+      <div
+        className={cn(
+          "grid gap-2",
+          isTabletOrMobile ? "grid-cols-1" : "md:grid-cols-3"
+        )}
+      >
         {sampleProjects.map((project) => (
           <ProjectCard key={project.id} {...project} />
         ))}
