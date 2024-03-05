@@ -21,7 +21,7 @@ const JoinProjectButton = (props: JoinProjectButtonProps) => {
       variant={"outline"}
       onClick={handleClick}
     >
-      <UsersIcon className="mr-2 size-4" />
+      <UsersIcon className="mr-2 size-3" />
       Join Existing Project
     </Button>
   );
