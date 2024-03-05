@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 import { MixerVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
 import { Database, FlaskConical, User, UserMinus } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectProps {
   id: string;
@@ -21,6 +21,7 @@ interface ProjectProps {
 
 const ProjectCard = (props: ProjectProps) => {
   const auth = useAuth();
+  const navigate = useNavigate();
 
   const calculateProgress = () => {
     const start = new Date(props.startDate);
@@ -45,6 +46,10 @@ const ProjectCard = (props: ProjectProps) => {
       // // project_management.leaveProject(id);
       // TODO: Implement leaveProject
     }
+  };
+
+  const handleManage = () => {
+    navigate(`/projects/${props.id}`);
   };
 
   return (
@@ -102,9 +107,9 @@ const ProjectCard = (props: ProjectProps) => {
             </>
           )}
         </Button>
-        <Button className="flex flex-row items-center">
+        <Button className="flex flex-row items-center" onClick={handleManage}>
           <MixerVerticalIcon className="mr-2" />
-          <Link to={`/projects/${props.id}`}>Manage</Link>
+          Manage
         </Button>
       </div>
     </div>
