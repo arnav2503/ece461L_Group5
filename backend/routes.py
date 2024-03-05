@@ -91,7 +91,7 @@ def validate_token():
 @app.route('/api/get-user', methods=['GET'])
 @login_required
 def get_user(payload):
-    user = mongo.users.find_one({'_id': payload['username']})
+    user = mongo.users.find_one({'_id': payload['username']}, {'_id': 1, 'project_list': 1})
     response = user, 200
     return response
 

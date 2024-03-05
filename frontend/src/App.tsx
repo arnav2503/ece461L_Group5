@@ -7,6 +7,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import SignupPage from "@/components/SignupPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "./components/ThemeProvider";
+import UserProfile from "./components/UserProfile";
 
 function App() {
   return (
@@ -28,6 +29,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <CreateProjectPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <UserProfile />
                   </ProtectedRoute>
                 }
               />

@@ -1,3 +1,4 @@
+import { useAuth } from "@/components/AuthContext";
 import project_management from "@/api/project_management";
 import { DateRangeSelector } from "@/components/DateRangeSelector";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ function CreateProjectForm(props: CreateProjectFormProps) {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const auth = useAuth();
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: addDays(new Date(), 7),
@@ -43,6 +45,7 @@ function CreateProjectForm(props: CreateProjectFormProps) {
         start_date,
         end_date
       );
+      auth.update_user();
       toast({
         title: "Project Created",
         description: "The project has been created successfully.",

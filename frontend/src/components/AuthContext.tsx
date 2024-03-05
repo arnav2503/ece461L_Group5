@@ -2,6 +2,7 @@ import auth from "@/api/auth";
 import { toast } from "@/components/ui/use-toast";
 
 import axios from "axios";
+import { set } from "date-fns";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +14,11 @@ interface AuthContextType {
   signup: (username: string, password: string, confirmPassword: string) => void;
   logout: () => void;
   loading: boolean;
+  user: {
+    _id: string;
+    project_list: string[];
+  };
+  update_user: () => void;
 }
 
 // Default values for the context, including userID and its setter
@@ -23,34 +29,68 @@ const AuthContext = createContext<AuthContextType>({
   signup: () => {},
   logout: () => {},
   loading: true,
+  user: {
+    _id: "",
+    project_list: [],
+  },
+  update_user: () => {},
 });
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userID, setUserID] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({
+    _id: "",
+    project_list: [],
+  });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const user = await auth.getUser();
-        setIsAuthenticated(true);
-        setUserID(user._id);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          if (error.response?.status === 401) {
-            setIsAuthenticated(false);
-            setUserID(null);
-          }
-        } else {
-          console.error("Unexpected error during authentication check:", error); // Log for debugging
+  const checkAuth = async () => {
+    try {
+      const user = await auth.getUser();
+      setIsAuthenticated(true);
+      setUserID(user._id);
+      setUser(user);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          setIsAuthenticated(false);
+          setUserID(null);
         }
+      } else {
+        console.error("Unexpected error during authentication check:", error); // Log for debugging
       }
-    };
+    }
+  };
+
+  const load = () => {
     setLoading(true);
     checkAuth().finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    load();
   }, []);
+
+  const update_user = async () => {
+    setLoading(true);
+    try {
+      const user = await auth.getUser();
+      setUser(user);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          setIsAuthenticated(false);
+          setUserID(null);
+        }
+      } else {
+        console.error("Unexpected error during authentication check:", error); // Log for debugging
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const signup = async (
     username: string,
@@ -138,6 +178,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         signup: signup,
         logout: logout,
         loading,
+        user,
+        update_user,
       }}
     >
       {children}
