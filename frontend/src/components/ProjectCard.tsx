@@ -38,7 +38,7 @@ const ProjectCard = (props: ProjectProps) => {
     return now.getTime() > end.getTime();
   };
 
-  const onRemove = (id: string) => {
+  const onRemove = () => {
     if (auth.userID === props.owner) {
       // // project_management.deleteProject(id);
       // TODO: Implement deleteProject
@@ -93,7 +93,7 @@ const ProjectCard = (props: ProjectProps) => {
         <Button
           variant="destructive"
           className="flex flex-row items-center"
-          onClick={() => onRemove(props.id)}
+          onClick={onRemove}
         >
           {auth.userID === props.owner ? (
             <>
