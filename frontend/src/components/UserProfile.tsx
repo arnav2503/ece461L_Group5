@@ -11,7 +11,7 @@ function UserProfile() {
 
   return (
     <div>
-      <PageHeader em={auth.userID} after={"'s Profile"} />
+      <PageHeader before={auth.userID + "'s "} em={"Profile"} />
       <p>Username: {auth.userID}</p>
       <div>
         <span>Assigned Projects: </span>

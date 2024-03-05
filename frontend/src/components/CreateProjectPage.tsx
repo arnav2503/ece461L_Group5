@@ -5,7 +5,7 @@ import PageHeader from "./PageHeader";
 function CreateProjectPage() {
   return (
     <>
-      <PageHeader em="Create Project" />
+      <PageHeader em="Create" after=" Project" />
       <CreateProjectForm className="p-10" />
       <Toaster />
     </>
