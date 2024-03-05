@@ -55,7 +55,7 @@ const ProjectCard = (props: ProjectProps) => {
   return (
     <div
       className={cn(
-        "border-2 rounded-2xl p-6 transition-all hover:transform hover:scale-105",
+        "border rounded-2xl p-6 transition-all hover:transform hover:scale-105 hover:shadow-2xl dark:hover:shadow-2xl dark:hover:shadow-stone-700",
         isComplete() ? "opacity-50 hover:opacity-100" : ""
       )}
     >
