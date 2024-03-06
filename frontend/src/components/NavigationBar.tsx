@@ -25,7 +25,7 @@ function NavigationBar() {
               <HamburgerMenuIcon />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="flex flex-col p-0">
+          <DropdownMenuContent className="flex flex-col p-0 m-1">
             <DropdownMenuItem asChild>
               <HomeButton className="border-none justify-start" />
             </DropdownMenuItem>
