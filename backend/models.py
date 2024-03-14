@@ -3,6 +3,7 @@ from mongoengine import Document, StringField, ReferenceField, ListField, DateTi
 class User(Document):
     username = StringField(required=True, unique=True, primary_key=True)
     password_hash = StringField(required=True)  
+    display_name = StringField()
     project_list = ListField(ReferenceField('Project'), default=list) # https://docs.mongoengine.org/guide/defining-documents.html#many-to-many-with-listfields
 
 class Project (Document):

@@ -45,12 +45,13 @@ def signup():
     
     username = request.json.get('username')
     password = request.json.get('password')
+    display_name = request.json.get('displayName')
 
     if not username or not password:
         response = jsonify({'error': 'Username and password are required'}), 400
 
     password_hash = hash_password(password)
-    new_user = User(username=username, password_hash=password_hash)
+    new_user = User(username=username, password_hash=password_hash, display_name=display_name)
 
     try:
         mongo.users.insert_one(new_user.to_mongo())
@@ -76,7 +77,7 @@ def login():
             'exp': datetime.utcnow() + timedelta(hours=24)  # Token expires in 24 hours
         }, app.config['SECRET_KEY'], algorithm='HS256')  # Use your app's secret key
 
-        response = jsonify({'token': token}), 200
+        response = jsonify({'token': token, 'username': user['_id'], 'display_name': user['display_name']}), 200
     else:
         response = jsonify({'error': 'Invalid username or password'}), 401
 
@@ -91,7 +92,7 @@ def validate_token():
 @app.route('/api/get-user', methods=['GET'])
 @login_required
 def get_user(payload):
-    user = mongo.users.find_one({'_id': payload['username']}, {'_id': 1, 'project_list': 1})
+    user = mongo.users.find_one({'_id': payload['username']}, {'_id': 1, 'display_name': 1, 'project_list': 1})
     response = user, 200
     return response
 

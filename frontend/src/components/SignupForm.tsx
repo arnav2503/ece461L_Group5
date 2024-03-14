@@ -14,6 +14,7 @@ interface SignupFormProps {
 const SignupForm = (props: SignupFormProps) => {
   const auth = useAuth();
   const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState(""); // Additional field
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(""); // Additional field
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +22,7 @@ const SignupForm = (props: SignupFormProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    await auth.signup(username, password, confirmPassword);
+    await auth.signup(username, displayName, password, confirmPassword);
     setIsLoading(false);
   };
 
@@ -35,6 +36,17 @@ const SignupForm = (props: SignupFormProps) => {
             value={username}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setUsername(e.target.value)
+            }
+            className="mb-1"
+            disabled={isLoading}
+            required
+          />
+
+          <Input
+            placeholder="Display Name"
+            value={displayName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setDisplayName(e.target.value)
             }
             className="mb-1"
             disabled={isLoading}

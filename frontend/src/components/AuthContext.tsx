@@ -9,8 +9,14 @@ import { useNavigate } from "react-router-dom";
 interface AuthContextType {
   isAuthenticated: boolean;
   userID: string | null; // Assuming userID is a string. Use null when there's no user.
+  displayName: string | null;
   login: (username: string, password: string) => void;
-  signup: (username: string, password: string, confirmPassword: string) => void;
+  signup: (
+    username: string,
+    displayName: string,
+    password: string,
+    confirmPassword: string
+  ) => void;
   logout: () => void;
   loading: boolean;
   user: {
@@ -24,6 +30,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   userID: null,
+  displayName: null,
   login: () => {},
   signup: () => {},
   logout: () => {},
@@ -38,6 +45,7 @@ const AuthContext = createContext<AuthContextType>({
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userID, setUserID] = useState<string | null>(null);
+  const [displayName, setDisplayName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({
     _id: "",
@@ -50,12 +58,14 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       const user = await auth.getUser();
       setIsAuthenticated(true);
       setUserID(user._id);
+      setDisplayName(user.display_name);
       setUser(user);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
           setIsAuthenticated(false);
           setUserID(null);
+          setDisplayName(null);
         }
       } else {
         console.error("Unexpected error during authentication check:", error); // Log for debugging
@@ -77,11 +87,14 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const user = await auth.getUser();
       setUser(user);
+      setDisplayName(user.display_name);
+      setUserID(user._id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
           setIsAuthenticated(false);
           setUserID(null);
+          setDisplayName(null);
         }
       } else {
         console.error("Unexpected error during authentication check:", error); // Log for debugging
@@ -93,6 +106,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signup = async (
     username: string,
+    displayName: string,
     password: string,
     confirmPassword: string
   ) => {
@@ -106,7 +120,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     try {
-      await auth.signup(username, password);
+      await auth.signup(username, password, displayName);
       navigate("/login");
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -136,9 +150,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (username: string, password: string) => {
     try {
-      await auth.login(username, password);
+      const response = await auth.login(username, password);
       setIsAuthenticated(true);
-      setUserID(username);
+      setUserID(response.username);
+      setDisplayName(response.display_name);
       load();
       navigate("/");
     } catch (error) {
@@ -174,6 +189,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         isAuthenticated,
         userID,
+        displayName,
         login: login,
         signup: signup,
         logout: logout,

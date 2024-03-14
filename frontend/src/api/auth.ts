@@ -3,8 +3,8 @@ import axios from 'axios';
 const baseURL = 'http://localhost:5001';
 const TOKEN_KEY = 'auth_token'; // Key used in localStorage
 
-const signup = async (username: string, password: string) => {
-    const response = await axios.post(`${baseURL}/api/signup`, { username, password }, { withCredentials: true });
+const signup = async (username: string, password: string, displayName: string) => {
+    const response = await axios.post(`${baseURL}/api/signup`, { username, password, displayName }, { withCredentials: true });
     return response.data; 
 };
 

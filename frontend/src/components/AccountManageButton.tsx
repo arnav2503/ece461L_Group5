@@ -29,7 +29,7 @@ function AccountManageButton(props: AccountManageButtonProps) {
           variant={"outline"}
         >
           <PersonIcon className="mr-2" />
-          {auth.userID}
+          {auth.displayName || auth.userID}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="">
