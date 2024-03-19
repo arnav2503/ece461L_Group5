@@ -21,7 +21,7 @@ import {
   DialogTrigger,
   DialogContent,
 } from "./ui/dialog";
-import { PlusIcon } from "@radix-ui/react-icons";
+import { FilePlusIcon, PlusIcon } from "@radix-ui/react-icons";
 
 interface CreateProjectFormProps {
   className?: string;
@@ -154,6 +154,7 @@ function CreateProjectButton(props: CreateProjectFormProps) {
                 onClick={handleSubmit}
               >
                 <Spinner size={15} disabled={!isLoading} />
+                <FilePlusIcon className="mr-2" />
                 Create Project
               </Button>
               <DialogClose>

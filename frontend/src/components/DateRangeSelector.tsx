@@ -46,7 +46,7 @@ export class DateRangeSelector extends React.Component<
               id="date"
               variant={"outline"}
               className={cn(
-                "w-[300px] justify-start text-left font-normal",
+                "w-full justify-start text-left font-normal",
                 !this.state.date && "text-muted-foreground"
               )}
               disabled={this.props.disabled}
