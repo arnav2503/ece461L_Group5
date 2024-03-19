@@ -55,7 +55,7 @@ const LoginForm = (props: LoginFormProps) => {
             </Button>
 
             <Link to="/signup">
-              <Button variant="secondary" className="">
+              <Button variant="ghost" className="">
                 Create Account
               </Button>
             </Link>

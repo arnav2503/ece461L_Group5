@@ -81,7 +81,7 @@ const SignupForm = (props: SignupFormProps) => {
               Sign Up
             </Button>
             <Link to="/login">
-              <Button variant="secondary" className="">
+              <Button variant="ghost" className="">
                 Back to Sign In
               </Button>
             </Link>
