@@ -57,7 +57,7 @@ def signup():
         mongo.users.insert_one(new_user.to_mongo())
         response = jsonify({'message': 'User created successfully'}), 201
     except pymongo.errors.DuplicateKeyError: 
-        response = jsonify({'error': 'A user with that username already exists'}), 400 
+        response = jsonify({'error': 'That username is already taken.'}), 400 
     
     return response
 
