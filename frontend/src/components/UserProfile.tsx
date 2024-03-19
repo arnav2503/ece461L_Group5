@@ -14,7 +14,7 @@ function UserProfile() {
   return (
     <>
       <div>
-        <div className="w-1/2 mx-auto mt-5 border rounded-2xl p-10">
+        <div className="w-2/3 mx-auto mt-5 border rounded-2xl p-10">
           <div className="flex flex-row justify-between align-middle items-center">
             <span className="font-bold">Username:</span> {auth.userID}
           </div>

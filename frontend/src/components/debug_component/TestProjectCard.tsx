@@ -8,7 +8,7 @@ const TestProjectCards = () => {
     {
       id: "project-01",
       name: "Web Development",
-      owner: "armaan",
+      owner: "armaan_v9.24",
       description: "A collaborative web development project.",
       startDate: "2023-12-05",
       endDate: "2024-03-20",

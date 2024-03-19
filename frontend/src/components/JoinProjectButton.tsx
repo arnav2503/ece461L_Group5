@@ -34,7 +34,11 @@ function JoinProjectButton(props: JoinProjectButtonProps) {
     event.preventDefault();
 
     setIsLoading(true);
-    // TODO
+    // TODO - Add logic to join project
+    // (1): use `id` to locate and show confirmation message
+    // (2): use `auth.update_user()` to update the user's project list
+    // (3): use `toast()` to show a message if the project was not found or if the user was already in the project
+    // -->  See the CreateProjectButton component for an example of how to use `auth.update_user()` and `toast()`
     setIsLoading(false);
   };
 
