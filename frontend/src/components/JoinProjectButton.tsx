@@ -1,6 +1,14 @@
 import { useAuth } from "@/components/AuthContext";
 import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
@@ -9,14 +17,6 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { UsersIcon } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-} from "./ui/dialog";
 
 interface JoinProjectButtonProps {
   className?: string;

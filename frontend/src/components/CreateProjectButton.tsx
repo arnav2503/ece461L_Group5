@@ -3,25 +3,25 @@ import { useAuth } from "@/components/AuthContext";
 import { DateRangeSelector } from "@/components/DateRangeSelector";
 import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 
+import { FilePlusIcon, PlusIcon } from "@radix-ui/react-icons";
 import axios from "axios";
 import { addDays } from "date-fns";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useNavigate } from "react-router-dom";
-import {
-  Dialog,
-  DialogClose,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-  DialogContent,
-} from "./ui/dialog";
-import { FilePlusIcon, PlusIcon } from "@radix-ui/react-icons";
 
 interface CreateProjectFormProps {
   className?: string;

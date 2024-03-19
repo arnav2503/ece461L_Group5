@@ -1,8 +1,8 @@
 import { useAuth } from "@/components/AuthContext";
+import { ChangeDisplayNameButton } from "@/components/ChangeDisplayNameButton";
 import Spinner from "@/components/Spinner";
-import { Separator } from "./ui/separator";
-import { ChangeDisplayNameButton } from "./ChangeDisplayNameButton";
-import { Toaster } from "./ui/toaster";
+import { Separator } from "@/components/ui/separator";
+import { Toaster } from "@/components/ui/toaster";
 
 function UserProfile() {
   const auth = useAuth();

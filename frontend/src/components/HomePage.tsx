@@ -1,7 +1,7 @@
 import { useAuth } from "@/components/AuthContext";
 import TestProjectCards from "@/components/debug_component/TestProjectCard";
+import PageHeader from "@/components/PageHeader";
 import { Toaster } from "@/components/ui/toaster";
-import PageHeader from "./PageHeader";
 
 function HomePage() {
   const auth = useAuth();

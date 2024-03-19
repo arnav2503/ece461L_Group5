@@ -1,8 +1,9 @@
+import { ModeToggle } from "@/components/ModeToggle";
 import NavigationBar from "@/components/NavigationBar";
+import { cn } from "@/lib/utils";
+
 import React from "react";
 import { useMediaQuery } from "react-responsive";
-import { ModeToggle } from "./ModeToggle";
-import { cn } from "@/lib/utils";
 
 interface PageHeaderProps {
   before?: React.ReactNode;

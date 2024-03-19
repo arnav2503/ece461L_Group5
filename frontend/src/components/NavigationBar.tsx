@@ -1,17 +1,18 @@
+import AccountManageButton from "@/components/AccountManageButton";
 import CreateProjectButton from "@/components/CreateProjectButton";
 import HomeButton from "@/components/HomeButton";
 import JoinProjectButton from "@/components/JoinProjectButton";
 import { ModeToggle } from "@/components/ModeToggle";
-import AccountManageButton from "@/components/AccountManageButton";
-import { useMediaQuery } from "react-responsive";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
+  DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuContent,
-} from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
+} from "@/components/ui/dropdown-menu";
+
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { useMediaQuery } from "react-responsive";
 
 function NavigationBar() {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 970px)" });

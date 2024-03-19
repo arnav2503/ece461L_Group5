@@ -4,9 +4,10 @@ import HomePage from "@/components/HomePage";
 import LoginPage from "@/components/LoginPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import SignupPage from "@/components/SignupPage";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import UserProfilePage from "@/components/UserProfilePage";
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ThemeProvider } from "./components/ThemeProvider";
-import UserProfilePage from "./components/UserProfilePage";
 
 function App() {
   return (

@@ -1,3 +1,4 @@
+import { useAuth } from "@/components/AuthContext";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,10 +12,10 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "./AuthContext";
-import { useState } from "react";
-import { Pencil2Icon } from "@radix-ui/react-icons";
+
 import { cn } from "@/lib/utils";
+import { Pencil2Icon } from "@radix-ui/react-icons";
+import { useState } from "react";
 
 interface ChangeDisplayNameButtonProps {
   className?: string;
