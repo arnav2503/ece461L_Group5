@@ -24,6 +24,7 @@ interface AuthContextType {
     project_list: string[];
   };
   update_user: () => void;
+  updateDisplayName: (displayName: string) => void;
 }
 
 // Default values for the context, including userID and its setter
@@ -40,6 +41,7 @@ const AuthContext = createContext<AuthContextType>({
     project_list: [],
   },
   update_user: () => {},
+  updateDisplayName: () => {},
 });
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -101,6 +103,41 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const updateDisplayName = async (displayName: string) => {
+    try {
+      await auth.updateDisplayName(displayName);
+      setDisplayName(displayName);
+      toast({
+        title: "Display name updated",
+        description: "Your display name has been updated.",
+        variant: "default",
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast({
+            title: "Update failed",
+            description: error.response.data.error,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Update failed",
+            description: "Network error. Please try again.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        console.error("Unexpected error during update:", error); // Log for debugging
+        toast({
+          title: "Update failed",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -196,6 +233,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         loading,
         user,
         update_user,
+        updateDisplayName,
       }}
     >
       {children}

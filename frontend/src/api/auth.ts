@@ -18,6 +18,11 @@ const login = async (username: string, password: string) => {
   return response.data; 
 };
 
+const updateDisplayName = async (displayName: string) => {
+  const response = await axios.post(`${baseURL}/api/update-display-name`, { displayName }, { withCredentials: true });
+  return response.data;
+}
+
 const logout = () => {
   localStorage.removeItem(TOKEN_KEY);
 };
@@ -44,4 +49,4 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-export default { signup, login, logout, isLoggedIn, getAuthToken, getUser };
+export default { signup, login, updateDisplayName, logout, isLoggedIn, getAuthToken, getUser };

@@ -149,3 +149,23 @@ def create_project(payload):
     except Exception as e:
         response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
         return response
+    
+@app.route('/api/update-display-name', methods=['POST', 'OPTIONS'])
+@login_required
+def update_display_name(payload):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    new_display_name = request.json.get('displayName')
+    if not new_display_name:
+        response = jsonify({'error': 'New display name is required'}), 400
+        return response
+
+    try:
+        mongo.users.find_one_and_update({'_id': payload['username']}, {'$set': {'display_name': new_display_name}})
+        response = jsonify({'message': 'Display name updated successfully'}), 200
+        return response
+    except Exception as e:
+        response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
+        return response
