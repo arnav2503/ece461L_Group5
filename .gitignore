@@ -2,3 +2,4 @@
 backend/__pycache__/
 .vscode
 ece461L_Group5.code-workspace
+backend/.env
