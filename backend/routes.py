@@ -12,6 +12,7 @@ def login_required(f):
     @wraps(f)
     def secured_function(*args, **kwargs):
         if request.method == 'OPTIONS':
+            response.headers['Access-Control-Allow-Origin'] = '*'
             response = "OK", 200
             return response
         
@@ -40,6 +41,7 @@ def login_required(f):
 @app.route('/api/signup', methods=['POST', 'OPTIONS'])
 def signup():
     if request.method == 'OPTIONS':
+        response.headers['Access-Control-Allow-Origin'] = '*'  # Allow CORS
         response = "OK", 200
         return response
     
@@ -64,6 +66,7 @@ def signup():
 @app.route('/api/login', methods=['POST', 'OPTIONS'])
 def login():
     if request.method == 'OPTIONS':
+        response.headers['Access-Control-Allow-Origin'] = '*'  # Allow CORS
         response = "OK", 200
         return response
     
