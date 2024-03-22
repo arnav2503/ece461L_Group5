@@ -172,5 +172,8 @@ def update_display_name(payload):
 
 @app.route('/api/project/project-<int:id>', methods=['GET', 'OPTIONS', 'POST'])
 @login_required
-def manageproject(id):
-    pass
+def manage_project(id):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+    
