@@ -169,3 +169,8 @@ def update_display_name(payload):
     except Exception as e:
         response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
         return response
+
+@app.route('/api/project/project-<int:id>', methods=['GET', 'OPTIONS', 'POST'])
+@login_required
+def manageproject(id):
+    pass
