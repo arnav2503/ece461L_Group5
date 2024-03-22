@@ -170,10 +170,15 @@ def update_display_name(payload):
         response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
         return response
 
-@app.route('/api/project/project-<int:id>', methods=['GET', 'OPTIONS', 'POST'])
+@app.route('/api/project/project-<string:id>', methods=['GET', 'OPTIONS', 'POST'])
 @login_required
-def manage_project(id):
+def view_project(id):
     if request.method == 'OPTIONS':
         response = "OK", 200
         return response
     
+    if request.method == 'GET':
+        response = mongo.project.find_one({"_id":id})
+        return response
+    elif request.method == 'POST':
+        pass
