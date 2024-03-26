@@ -1,4 +1,8 @@
-# ECE 461L Group Project
+# ECE 461L Group Project: Project Management Web App
+
+## See the project live at [software-lab.armaanv.com](https://software-project.armaanv.com)
+
+## Course Information
 
 Professor: Dr. Abhay Samant
 Spring 2024, University of Texas at Austin
@@ -6,91 +10,54 @@ Spring 2024, University of Texas at Austin
 ## Team Members
 
 1. [Armaan Vakharia](https://github.com/armaan-v924)
-2. Arnav Kithania
+2. [Arnav Kithania](https://github.com/arnav2503)
 3. Fahim Imtaiz
 4. Wasay Asrar
 
-## Environment Setup
+## Project Description
 
-### Project File Structure
+The project is a web app that allows users to create and manage projects and assigned hardware resources. The app will have a user interface that allows users to create projects, join existing projects, and assign resources to projects. The app will also have a backend that manages the database and handles the business logic of the app.
 
-```file
-./Project-Directory/
-| -- backend /
-|    | -- app.py
-|    | -- config.py
-|    | -- models.py
-|    | -- routes.py
-|    | -- utils.py
-| -- frontend / ** Do not create this directory. Frontend setup will do it for you.
-```
+## Project Features
 
-### Backend Setup
+1. User authentication
+2. Create projects
+3. Join projects
+4. Assign resources to projects
+5. View project details
+6. View resource details
+7. View project timeline
 
-1. Install [Python 3.11](https://www.python.org/downloads/)
-2. Use an environment manager like `pipenv` or `conda` to create a virtual environment.
-   * For conda, use `conda create -n <env-name> python=3.11`
-   * Activate the environment: `conda activate <env-name>`
-3. Install the packages: `conda install bcrypt flask flask-cors flask-login flask-pymongo`
+## Technologies Used
 
-### Frontend Setup
+### Frontend
 
-1. Install [Node.js](https://nodejs.org/en)
-2. Open a terminal and navigate to the `Project-Directory`
-3. Create a new Vite app using `npm create vite@latest`
-   * Enter `frontend` as the project name
-   * Choose `React` as the framework
-   * Choose `TypeScript` as the language
-4. Navigate to the `frontend` directory: `cd frontend`
-5. Install the packages: `npm install`
-6. Install tailwindcss: `npm install tailwindcss postcss autoprefixer`
-7. Initialize tailwindcss: `npx tailwindcss init -p`
-8. Edit `tsconfig.json` and add the following code:
+1. [React](https://reactjs.org/)
+2. [TypeScript](https://www.typescriptlang.org/)
+3. [Tailwind CSS](https://tailwindcss.com/)
+4. [Vite](https://vitejs.dev/)
+5. [shadcn/ui](https://ui.shadcn.com/)
 
-```json
-{
-    {
-        "compilerOptions": {
-            // ...
-            "baseUrl": ".",
-            "paths": {
-                "@/*": [
-                    "./src/*"
-                ]
-            }
-            // ...
-        }
-    }
-}
-```
+### Backend
 
-9. Run `npm i -D @types/node`
-10. Update `vite.config.ts` to include the following code:
+1. [Python](https://www.python.org/)
+2. [Flask](https://flask.palletsprojects.com/)
 
-```typescript
-import path from "path"
-import react from "@vitejs/plugin-react"
-import { defineConfig } from "vite"
+### Database
 
-export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-})
-```
+1. [MongoDB Atlas](https://www.mongodb.com/)
 
-11. Run the CLI using: `npx shadcn-ui@latest init`
-    * Choose `yes` to use TypeScript
-    * Choose `Default` as the style
-    * Choose `Stone` for the base color
-    * Enter `src/index.css` as the global css
-    * Choose `yes` to use css variables for color
-    * Enter `tailwind.config.js` for the tailwind config file
-    * Enter `@/components` for the components directory
-    * Enter `@/lib/utils` for the utils directory
-    * Select `no` for using React Server Components
-12. To add a component use: `npx shadcn-ui@latest add component <component-name>`. The component will be added to the `src/components/ui` directory. Check a list of available components [here](https://ui.shadcn.com/docs/components/accordion)
-13. Also install the following packages: `npm install react-router-dom axios`
+## Run the App Locally
+
+1. Clone the repository
+2. Install dependencies
+   1. `cd frontend && npm install`
+   2. `cd backend && pip install -r requirements.txt`
+3. Start the frontend
+   1. `cd frontend && npm run dev`
+4. Start the backend
+   1. `cd backend && python app.py`
+5. Open the app in your browser
+   1. `http://localhost:5173`
+
+

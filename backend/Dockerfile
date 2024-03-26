@@ -8,4 +8,9 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ["python", "app.py"]
+EXPOSE 5001
+
+RUN chmod +x start.sh
+
+ENTRYPOINT [ "./start.sh" ]
+
