@@ -10,7 +10,5 @@ COPY . .
 
 RUN chmod +x start.sh
 
-EXPOSE 5001
-
 ENTRYPOINT [ "./start.sh" ]
 
