@@ -20,6 +20,7 @@ interface ProjectProps {
   endDate: string;
   resourcesUsed: number;
   resourcesCapacity: number;
+  reloadProjects: () => void;
 }
 
 const ProjectCard = (props: ProjectProps) => {
@@ -44,9 +45,10 @@ const ProjectCard = (props: ProjectProps) => {
   const onRemove = () => {
     if (auth.userID === props.owner) {
       try {
-        project_management.deleteProject(props.id);
-        // reload parent component
-        window.location.reload();
+        project_management.deleteProject(props.id).then(() => {
+          props.reloadProjects();
+        });
+        props.reloadProjects();
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast({
@@ -64,9 +66,9 @@ const ProjectCard = (props: ProjectProps) => {
       }
     } else {
       try {
-        project_management.unassignProject(props.id);
-        // reload parent component
-        window.location.reload();
+        project_management.unassignProject(props.id).then(() => {
+          props.reloadProjects();
+        });
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast({

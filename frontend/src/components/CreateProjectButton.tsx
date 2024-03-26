@@ -61,7 +61,7 @@ function CreateProjectButton(props: CreateProjectFormProps) {
         description: "The project has been created successfully.",
         variant: "default",
       });
-      navigate(`/projects/${id}`);
+      navigate(`/projects/project-${id}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
@@ -109,6 +109,7 @@ function CreateProjectButton(props: CreateProjectFormProps) {
           <div className="flex flex-col w-full align-middle items-center justify-between">
             <Input
               placeholder="Project ID"
+              type="number"
               className={cn(
                 "w-full my-1",
                 isLoading && "cursor-not-allowed opacity-50"
