@@ -22,11 +22,16 @@ function ViewProjects() {
   const [loading, setLoading] = useState(true);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 970px)" });
 
-  useEffect(() => {
+  const loadProjects = () => {
+    setLoading(true);
     getAssignedProjects.getAssignedProjects().then((projects) => {
       setProjects(projects);
       setLoading(false);
     });
+  };
+
+  useEffect(() => {
+    loadProjects();
   }, []);
 
   if (loading) {
@@ -57,6 +62,7 @@ function ViewProjects() {
               endDate={project.end_date}
               resourcesUsed={project.resourcesUsed}
               resourcesCapacity={project.resourcesCapacity}
+              reloadProjects={loadProjects}
             />
           ))}
         </div>
