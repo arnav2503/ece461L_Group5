@@ -3,10 +3,11 @@ from flask import Flask
 from flask_cors import CORS
 from pymongo import MongoClient
 from config import config  # Import your configurations
+import os
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True) 
-app.config.from_object(config['development'])
+app.config.from_object(config[os.getenv('FLASK_ENV', 'development')])
 
 import certifi
 ca = certifi.where()
