@@ -1,10 +1,10 @@
-import ProjectCard from "@/components/ProjectCard";
-import { cn } from "@/lib/utils";
 import getAssignedProjects from "@/api/project_management";
+import ProjectCard from "@/components/ProjectCard";
+import ProjectCardSkeleton from "@/components/ProjectCardSkeleton";
+import { cn } from "@/lib/utils";
 
-import { useMediaQuery } from "react-responsive";
 import { useEffect, useState } from "react";
-import Spinner from "./Spinner";
+import { useMediaQuery } from "react-responsive";
 
 interface Project {
   _id: string;
@@ -35,7 +35,25 @@ function ViewProjects() {
   }, []);
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <>
+        <div className="container mx-auto my-5">
+          <div
+            className={cn(
+              "grid gap-2",
+              isTabletOrMobile ? "grid-cols-1" : "md:grid-cols-3"
+            )}
+          >
+            <ProjectCardSkeleton />
+            <ProjectCardSkeleton />
+            <ProjectCardSkeleton />
+            <ProjectCardSkeleton />
+            <ProjectCardSkeleton />
+            <ProjectCardSkeleton />
+          </div>
+        </div>
+      </>
+    );
   }
 
   return (
