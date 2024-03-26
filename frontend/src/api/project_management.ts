@@ -1,7 +1,7 @@
 import axios from "axios";
 import getAuthToken from '@/api/auth';
 
-const baseURL = process.env.VITE_API_URL || 'http://localhost:5001';
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
 const createProject = async (id: string, name: string, description: string, start_date?: Date, end_date?: Date) => {
   const response = await axios.post(
