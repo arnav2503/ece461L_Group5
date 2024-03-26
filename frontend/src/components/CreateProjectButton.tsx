@@ -152,7 +152,7 @@ function CreateProjectButton(props: CreateProjectFormProps) {
                 <Button
                   type="submit"
                   className={cn(
-                    "",
+                    "my-2",
                     isLoading && "cursor-not-allowed opacity-50"
                   )}
                   disabled={isLoading}

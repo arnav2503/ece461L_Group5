@@ -10,6 +10,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -31,11 +37,20 @@ export function ChangeDisplayNameButton(props: ChangeDisplayNameButtonProps) {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="ghost" className={cn("p-3", props.className)}>
-          <Pencil2Icon />
-        </Button>
-      </DialogTrigger>
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger>
+            <DialogTrigger asChild>
+              <Button variant="ghost" className={cn("p-3", props.className)}>
+                <Pencil2Icon />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Change your display name.</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit display name</DialogTitle>

@@ -16,7 +16,7 @@ interface ChangeUsernameButtonProps {
 function ChangeUsernameButton(props: ChangeUsernameButtonProps) {
   return (
     <>
-      <TooltipProvider>
+      <TooltipProvider delayDuration={100}>
         <Tooltip>
           <TooltipTrigger>
             <div className="p-3">
