@@ -34,30 +34,34 @@ function JoinProjectButton(props: JoinProjectButtonProps) {
     event.preventDefault();
 
     setIsLoading(true);
-    try {
-      project_management.assignProject(id);
-      auth.update_user();
-      toast({
-        variant: "default",
-        description: "Project successfully joined!",
-        title: "Success",
+    project_management
+      .assignProject(id)
+      .then(() => {
+        auth.update_user();
+        toast({
+          variant: "default",
+          description: "Project joined successfully.",
+          title: "Success",
+        });
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          toast({
+            variant: "destructive",
+            description: error.response?.data.error,
+            title: "Error",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description: "An error occurred. Please try again.",
+            title: "Error",
+          });
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast({
-          variant: "destructive",
-          description: error.response?.data.message,
-          title: "Error",
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          description: "An error occurred. Please try again.",
-          title: "Error",
-        });
-      }
-    }
-    setIsLoading(false);
   };
 
   return (
@@ -74,38 +78,45 @@ function JoinProjectButton(props: JoinProjectButtonProps) {
         </DialogTrigger>
 
         <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <h2 className="text-lg font-semibold">Join an existing project</h2>
-          </DialogHeader>
-          <div className="flex flex-col w-full align-middle items-center justify-between">
-            <Input
-              placeholder={"Project ID"}
-              className={cn(
-                "w-full my-1",
-                isLoading && "cursor-not-allowed opacity-50"
-              )}
-              onChange={(event) => setId(event.target.value)}
-              disabled={isLoading}
-              required
-            />
-          </div>
-          <DialogFooter>
-            <div className="flex flex-row-reverse justify-between w-full">
-              <Button
-                type="submit"
-                className={cn("", isLoading && "cursor-not-allowed opacity-50")}
+          <form onSubmit={handleSubmit}>
+            <DialogHeader>
+              <h2 className="text-lg font-semibold">
+                Join an existing project
+              </h2>
+            </DialogHeader>
+
+            <div className="flex flex-col w-full align-middle items-center justify-between">
+              <Input
+                placeholder={"Project ID"}
+                className={cn(
+                  "w-full my-2",
+                  isLoading && "cursor-not-allowed opacity-50"
+                )}
+                onChange={(event) => setId(event.target.value)}
                 disabled={isLoading}
-                onClick={handleSubmit}
-              >
-                <Spinner size={15} disabled={!isLoading} />
-                <MagnifyingGlassIcon className="mr-2" />
-                Find Project
-              </Button>
-              <DialogClose>
-                <Button variant={"ghost"}>Cancel</Button>
-              </DialogClose>
+                required
+              />
             </div>
-          </DialogFooter>
+            <DialogFooter>
+              <div className="flex flex-row-reverse justify-between w-full">
+                <Button
+                  type="submit"
+                  className={cn(
+                    "",
+                    isLoading && "cursor-not-allowed opacity-50"
+                  )}
+                  disabled={isLoading}
+                >
+                  <Spinner size={15} disabled={!isLoading} />
+                  <MagnifyingGlassIcon className="mr-2" />
+                  Find Project
+                </Button>
+                <DialogClose asChild>
+                  <Button variant={"ghost"}>Cancel</Button>
+                </DialogClose>
+              </div>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
     </>

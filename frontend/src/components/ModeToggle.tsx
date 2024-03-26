@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Cog } from "lucide-react";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
@@ -26,18 +26,21 @@ export function ModeToggle() {
           onClick={() => setTheme("light")}
           className="hover:cursor-pointer"
         >
+          <Sun className="mr-2 h-[1rem] w-[1rem]" />
           Light
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme("dark")}
           className="hover:cursor-pointer"
         >
+          <Moon className="mr-2 h-[1rem] w-[1rem]" />
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme("system")}
           className="hover:cursor-pointer"
         >
+          <Cog className="mr-2 h-[1rem] w-[1rem]" />
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

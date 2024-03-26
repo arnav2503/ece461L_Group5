@@ -28,8 +28,8 @@ const ProjectCard = (props: ProjectProps) => {
   const navigate = useNavigate();
 
   const calculateProgress = () => {
-    const start = new Date(props.startDate || "2000-01-01");
-    const end = new Date(props.endDate || "2100-01-01");
+    const start = new Date(props.startDate || "1970-01-01");
+    const end = new Date(props.endDate || "3000-01-01");
     const now = new Date();
     const total = end.getTime() - start.getTime();
     const elapsed = now.getTime() - start.getTime();
@@ -44,46 +44,57 @@ const ProjectCard = (props: ProjectProps) => {
 
   const onRemove = () => {
     if (auth.userID === props.owner) {
-      try {
-        project_management.deleteProject(props.id).then(() => {
+      project_management
+        .deleteProject(props.id)
+        .then(() => {
           props.reloadProjects();
+          toast({
+            variant: "default",
+            description: "Project deleted successfully.",
+            title: "Success",
+          });
+        })
+        .catch((error) => {
+          if (axios.isAxiosError(error)) {
+            toast({
+              variant: "destructive",
+              description: error.response?.data.message,
+              title: "Error",
+            });
+          } else {
+            toast({
+              variant: "destructive",
+              description: "An error occurred while deleting the project",
+              title: "Error",
+            });
+          }
         });
-        props.reloadProjects();
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          toast({
-            variant: "destructive",
-            description: error.response?.data.message,
-            title: "Error",
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            description: "An error occurred while deleting the project",
-            title: "Error",
-          });
-        }
-      }
     } else {
-      try {
-        project_management.unassignProject(props.id).then(() => {
+      project_management
+        .unassignProject(props.id)
+        .then(() => {
           props.reloadProjects();
+          toast({
+            variant: "default",
+            description: "Project unassigned successfully.",
+            title: "Success",
+          });
+        })
+        .catch((error) => {
+          if (axios.isAxiosError(error)) {
+            toast({
+              variant: "destructive",
+              description: error.response?.data.message,
+              title: "Error",
+            });
+          } else {
+            toast({
+              variant: "destructive",
+              description: "An error occurred while unassigning the project",
+              title: "Error",
+            });
+          }
         });
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          toast({
-            variant: "destructive",
-            description: error.response?.data.message,
-            title: "Error",
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            description: "An error occurred while unassigning the project",
-            title: "Error",
-          });
-        }
-      }
     }
   };
 
@@ -123,8 +134,8 @@ const ProjectCard = (props: ProjectProps) => {
       </div>
       <div className="flex flex-col items-center mb-4 flex-grow">
         <div className="flex justify-between w-full mt-2 flex-grow">
-          <small className="">{props.startDate || "2000-01-01"}</small>
-          <small className="">{props.endDate || "2100-01-01"}</small>
+          <small className="">{props.startDate || "1970-01-01"}</small>
+          <small className="">{props.endDate || "3000-01-01"}</small>
         </div>
         <Progress value={calculateProgress()} className="w-full " />
       </div>
