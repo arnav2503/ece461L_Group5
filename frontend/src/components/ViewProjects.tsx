@@ -24,10 +24,16 @@ function ViewProjects() {
 
   const loadProjects = () => {
     setLoading(true);
-    getAssignedProjects.getAssignedProjects().then((projects) => {
-      setProjects(projects);
-      setLoading(false);
-    });
+    getAssignedProjects
+      .getAssignedProjects()
+      .then((projects) => {
+        setProjects(projects);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -80,7 +86,6 @@ function ViewProjects() {
               endDate={project.end_date}
               resourcesUsed={project.resourcesUsed}
               resourcesCapacity={project.resourcesCapacity}
-              reloadProjects={loadProjects}
             />
           ))}
         </div>

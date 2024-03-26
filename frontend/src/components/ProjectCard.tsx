@@ -20,7 +20,6 @@ interface ProjectProps {
   endDate: string;
   resourcesUsed: number;
   resourcesCapacity: number;
-  reloadProjects: () => void;
 }
 
 const ProjectCard = (props: ProjectProps) => {
@@ -47,7 +46,7 @@ const ProjectCard = (props: ProjectProps) => {
       project_management
         .deleteProject(props.id)
         .then(() => {
-          props.reloadProjects();
+          auth.update_user();
           toast({
             variant: "default",
             description: "Project deleted successfully.",
@@ -73,7 +72,7 @@ const ProjectCard = (props: ProjectProps) => {
       project_management
         .unassignProject(props.id)
         .then(() => {
-          props.reloadProjects();
+          auth.update_user();
           toast({
             variant: "default",
             description: "Project unassigned successfully.",

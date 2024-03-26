@@ -103,66 +103,70 @@ function CreateProjectButton(props: CreateProjectFormProps) {
         </DialogTrigger>
 
         <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <h2 className="text-lg font-semibold">Create a new project</h2>
-          </DialogHeader>
-          <div className="flex flex-col w-full align-middle items-center justify-between">
-            <Input
-              placeholder="Project ID"
-              type="number"
-              className={cn(
-                "w-full my-1",
-                isLoading && "cursor-not-allowed opacity-50"
-              )}
-              onChange={(event) => setId(event.target.value)}
-              disabled={isLoading}
-              required
-            />
-            <Input
-              placeholder="Project Name"
-              className={cn(
-                "w-full my-1",
-                isLoading && "cursor-not-allowed opacity-50"
-              )}
-              onChange={(event) => setName(event.target.value)}
-              disabled={isLoading}
-              required
-            />
-            <Textarea
-              placeholder="Project Description"
-              className={cn(
-                "w-full my-1",
-                isLoading && "cursor-not-allowed opacity-50"
-              )}
-              onChange={(event) => setDescription(event.target.value)}
-              disabled={isLoading}
-            />
-            <DateRangeSelector
-              onDateChange={(date) => setDateRange(date)}
-              className={cn(
-                "w-full my-1",
-                isLoading && "cursor-not-allowed opacity-50"
-              )}
-              disabled={isLoading}
-            />
-          </div>
-          <DialogFooter>
-            <div className="flex flex-row-reverse justify-between w-full">
-              <Button
-                type="submit"
-                className={cn("", isLoading && "cursor-not-allowed opacity-50")}
+          <form onSubmit={handleSubmit}>
+            <DialogHeader>
+              <h2 className="text-lg font-semibold">Create a new project</h2>
+            </DialogHeader>
+            <div className="flex flex-col w-full align-middle items-center justify-between">
+              <Input
+                placeholder="Project ID"
+                type="number"
+                className={cn(
+                  "w-full my-1",
+                  isLoading && "cursor-not-allowed opacity-50"
+                )}
+                onChange={(event) => setId(event.target.value)}
                 disabled={isLoading}
-                onClick={handleSubmit}
-              >
-                <Spinner size={15} disabled={!isLoading} />
-                <FilePlusIcon className="mr-2" />
-                Create Project
-              </Button>
-              <DialogClose>
-                <Button variant={"ghost"}>Cancel</Button>
-              </DialogClose>
+                required
+              />
+              <Input
+                placeholder="Project Name"
+                className={cn(
+                  "w-full my-1",
+                  isLoading && "cursor-not-allowed opacity-50"
+                )}
+                onChange={(event) => setName(event.target.value)}
+                disabled={isLoading}
+                required
+              />
+              <Textarea
+                placeholder="Project Description"
+                className={cn(
+                  "w-full my-1",
+                  isLoading && "cursor-not-allowed opacity-50"
+                )}
+                onChange={(event) => setDescription(event.target.value)}
+                disabled={isLoading}
+              />
+              <DateRangeSelector
+                onDateChange={(date) => setDateRange(date)}
+                className={cn(
+                  "w-full my-1",
+                  isLoading && "cursor-not-allowed opacity-50"
+                )}
+                disabled={isLoading}
+              />
             </div>
-          </DialogFooter>
+            <DialogFooter>
+              <div className="flex flex-row-reverse justify-between w-full">
+                <Button
+                  type="submit"
+                  className={cn(
+                    "",
+                    isLoading && "cursor-not-allowed opacity-50"
+                  )}
+                  disabled={isLoading}
+                >
+                  <Spinner size={15} disabled={!isLoading} />
+                  <FilePlusIcon className="mr-2" />
+                  Create Project
+                </Button>
+                <DialogClose>
+                  <Button variant={"ghost"}>Cancel</Button>
+                </DialogClose>
+              </div>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
     </>
