@@ -18,4 +18,4 @@ mongo = client.get_database("461l")
 from routes import * 
 
 if __name__ == '__main__':
-    app.run(debug=app.config['DEBUG'], port=app.config['PORT'])
+    app.run(debug=app.config['DEBUG'], host='0.0.0.0', port=app.config['PORT'])
