@@ -124,7 +124,7 @@ def create_project(payload):
         if data['start_date'] > data['end_date']:
             response = jsonify({'error': 'Project start date cannot be after the end date'}), 400
             return response
-
+        print(data['start_date'], data['end_date'])
         hardware_list = dict()
         for resource in mongo.resources.objects.find():
             hardware_list[resource] = 0
@@ -134,11 +134,12 @@ def create_project(payload):
             name = data['name'],
             description = data['description'],
             owner = payload['username'],
-            start_date = data['start_date'],
-            end_date = data['end_date'],
+            start_date = datetime.strptime(data['start_date'][:10], '%Y-%m-%d'),
+            end_date = datetime.strptime(data['end_date'][:10], '%Y-%m-%d'),
             hardware_list = hardware_list,
             assigned_users = []
         )
+
         mongo.projects.insert_one(project.to_mongo())
         mongo.users.find_one_and_update({'_id': payload['username']}, {'$push': {'project_list': data['id']}})
         response = jsonify({'message': 'Project created successfully'}), 201
@@ -170,9 +171,9 @@ def update_display_name(payload):
         response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
         return response
 
-@app.route('/api/project/project-<string:id>', methods=['GET', 'OPTIONS', 'POST'])
+@app.route('/api/projects/project-<id>', methods=['GET', 'DELETE', 'OPTIONS'])
 @login_required
-def view_project(id):
+def view_project(payload, id):
     if request.method == 'OPTIONS':
         response = "OK", 200
         return response
@@ -180,5 +181,85 @@ def view_project(id):
     if request.method == 'GET':
         response = mongo.project.find_one({"_id":id})
         return response
-    elif request.method == 'POST':
-        pass
+    
+    if request.method == 'DELETE':
+        project = mongo.projects.find_one({'_id': id})
+        if project['owner'] != payload['username']:
+            response = jsonify({'error': 'You do not have permission to delete this project'}), 403
+            return response
+        
+        mongo.projects.delete_one({'_id': id})
+        mongo.users.find_one_and_update({'_id': payload['username']}, {'$pull': {'project_list': id}})
+        response = jsonify({'message': 'Project deleted successfully'}), 200
+        return response
+
+@app.route('/api/projects/project-<id>/assign', methods=['POST', 'OPTIONS'])
+@login_required
+def assign_project(payload, id):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    if request.method == 'POST':
+        project = mongo.projects.find_one({'_id': id})
+
+        user = mongo.users.find_one({'_id': payload['username']})
+        if not user:
+            response = jsonify({'error': 'User not found'}), 404
+            return response
+
+        if user['_id'] in project['assigned_users'] or user['_id'] == project['owner']:
+            response = jsonify({'error': 'User is already assigned to this project'}), 409
+            return response
+
+        mongo.projects.find_one_and_update({'_id': id}, {'$push': {'assigned_users': user['_id']}})
+        mongo.users.find_one_and_update({'_id': user['_id']}, {'$push': {'project_list': id}})
+        response = jsonify({'message': 'User assigned to project successfully'}), 200
+        return response
+
+@app.route('/api/projects/assigned', methods=['GET', 'OPTIONS'])
+@login_required
+def get_assigned_projects(payload):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    project_ids = mongo.users.find_one({'_id': payload['username']}, {'project_list': 1})
+    projects = []
+    for project_id in project_ids['project_list']:
+        project = mongo.projects.find_one({'_id': project_id})
+        project.pop('assigned_users', None)
+        resourcesUsed = 0
+        for resource in project['hardware_list']:
+            resourcesUsed += project['hardware_list'][resource]
+        project['resourcesUsed'] = resourcesUsed
+        resourcesCapacity = 0
+        for resource in mongo.resources.find():
+            resourcesCapacity += resource['capacity']
+        project['resourcesCapacity'] = resourcesCapacity
+        project.pop('hardware_list', None)
+        if 'start_date' in project:
+            project['start_date'] = project['start_date'].strftime('%Y-%m-%d')
+        if 'end_date' in project:
+            project['end_date'] = project['end_date'].strftime('%Y-%m-%d')
+        projects.append(project)
+
+    response = projects, 200
+    return response
+
+@app.route('/api/projects/project-<id>/unassign', methods=['POST', 'OPTIONS'])
+@login_required
+def unassign_project(payload, id):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    project = mongo.projects.find_one({'_id': id})
+    if payload['username'] not in project['assigned_users']:
+        response = jsonify({'error': 'You are not assigned to this project'}), 403
+        return response
+
+    mongo.projects.find_one_and_update({'_id': id}, {'$pull': {'assigned_users': payload['username']}})
+    mongo.users.find_one_and_update({'_id': payload['username']}, {'$pull': {'project_list': id}})
+    response = jsonify({'message': 'Project unassigned successfully'}), 200
+    return response

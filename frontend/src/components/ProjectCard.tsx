@@ -1,10 +1,13 @@
+import project_management from "@/api/project_management";
 import { useAuth } from "@/components/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { toast } from "@/components/ui/use-toast";
 
 import { MixerVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
+import axios from "axios";
 import { Database, FlaskConical, User, UserMinus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -40,11 +43,45 @@ const ProjectCard = (props: ProjectProps) => {
 
   const onRemove = () => {
     if (auth.userID === props.owner) {
-      // // project_management.deleteProject(id);
-      // TODO: Implement deleteProject
+      try {
+        project_management.deleteProject(props.id);
+        // reload parent component
+        window.location.reload();
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          toast({
+            variant: "destructive",
+            description: error.response?.data.message,
+            title: "Error",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description: "An error occurred while deleting the project",
+            title: "Error",
+          });
+        }
+      }
     } else {
-      // // project_management.leaveProject(id);
-      // TODO: Implement leaveProject
+      try {
+        project_management.unassignProject(props.id);
+        // reload parent component
+        window.location.reload();
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          toast({
+            variant: "destructive",
+            description: error.response?.data.message,
+            title: "Error",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description: "An error occurred while unassigning the project",
+            title: "Error",
+          });
+        }
+      }
     }
   };
 

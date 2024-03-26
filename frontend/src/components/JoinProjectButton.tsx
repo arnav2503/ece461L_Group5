@@ -1,3 +1,4 @@
+import project_management from "@/api/project_management";
 import { useAuth } from "@/components/AuthContext";
 import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
@@ -14,9 +15,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import axios from "axios";
 import { UsersIcon } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 interface JoinProjectButtonProps {
   className?: string;
@@ -28,12 +29,34 @@ function JoinProjectButton(props: JoinProjectButtonProps) {
 
   const auth = useAuth();
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     setIsLoading(true);
+    try {
+      project_management.assignProject(id);
+      auth.update_user();
+      toast({
+        variant: "default",
+        description: "Project successfully joined!",
+        title: "Success",
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast({
+          variant: "destructive",
+          description: error.response?.data.message,
+          title: "Error",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          description: "An error occurred. Please try again.",
+          title: "Error",
+        });
+      }
+    }
     // TODO - Add logic to join project
     // (1): use `id` to locate and show confirmation message
     // (2): use `auth.update_user()` to update the user's project list

@@ -6,6 +6,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import SignupPage from "@/components/SignupPage";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import UserProfilePage from "@/components/UserProfilePage";
+import ViewProjects from "@/components/ViewProjects";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 

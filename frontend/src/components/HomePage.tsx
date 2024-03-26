@@ -1,7 +1,7 @@
 import { useAuth } from "@/components/AuthContext";
-import TestProjectCards from "@/components/debug_component/TestProjectCard";
 import PageHeader from "@/components/PageHeader";
 import { Toaster } from "@/components/ui/toaster";
+import ViewProjects from "@/components/ViewProjects";
 
 function HomePage() {
   const auth = useAuth();
@@ -12,7 +12,7 @@ function HomePage() {
         before={(auth.displayName || auth.userID) + "'s "}
         em={"Projects"}
       />
-      <TestProjectCards />
+      <ViewProjects />
       <Toaster />
     </>
   );

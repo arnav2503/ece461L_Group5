@@ -27,10 +27,10 @@ const getProjectDetails = async (projectId: string) => {
   return response.data;
 }
 
-const assignProject = async (projectId: string, userId: string) => {
+const assignProject = async (projectId: string) => {
   const response = await axios.post(
-    `${baseURL}/api/projects/${projectId}/assign`,
-    { userId },
+    `${baseURL}/api/projects/project-${projectId}/assign`,
+    {},
     { withCredentials: true }
   );
   return response.data;
@@ -45,6 +45,11 @@ const unassignProject = async (projectId: string) => {
   return response.data;
 }
 
+const deleteProject = async (projectId: string) => {
+  const response = await axios.delete(`${baseURL}/api/projects/${projectId}`, { withCredentials: true });
+  return response.data;
+}
+
 // Configure axios to include the token in requests
 axios.interceptors.request.use((config) => {
   const token = getAuthToken.getAuthToken();
@@ -54,4 +59,4 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-export default { createProject, getUnassignedProjects, getAssignedProjects, getProjectDetails, assignProject, unassignProject }
+export default { createProject, getUnassignedProjects, getAssignedProjects, getProjectDetails, assignProject, unassignProject, deleteProject }
