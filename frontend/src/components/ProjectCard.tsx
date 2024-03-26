@@ -28,8 +28,8 @@ const ProjectCard = (props: ProjectProps) => {
   const navigate = useNavigate();
 
   const calculateProgress = () => {
-    const start = new Date(props.startDate);
-    const end = new Date(props.endDate);
+    const start = new Date(props.startDate || "2000-01-01");
+    const end = new Date(props.endDate || "2100-01-01");
     const now = new Date();
     const total = end.getTime() - start.getTime();
     const elapsed = now.getTime() - start.getTime();
@@ -94,7 +94,7 @@ const ProjectCard = (props: ProjectProps) => {
   return (
     <div
       className={cn(
-        "border rounded-2xl p-6 transition-all hover:transform hover:scale-105 hover:shadow-2xl dark:hover:shadow-2xl dark:hover:shadow-stone-700",
+        "flex flex-col border rounded-2xl p-6 transition-all hover:transform hover:scale-105 hover:shadow-2xl dark:hover:shadow-2xl dark:hover:shadow-stone-700",
         isComplete() ? "opacity-50 hover:opacity-100" : ""
       )}
     >
@@ -121,10 +121,10 @@ const ProjectCard = (props: ProjectProps) => {
           </span>
         </span>
       </div>
-      <div className="flex flex-col items-center mb-4">
-        <div className="flex justify-between w-full mt-2">
-          <small className="">{props.startDate}</small>
-          <small className="">{props.endDate}</small>
+      <div className="flex flex-col items-center mb-4 flex-grow">
+        <div className="flex justify-between w-full mt-2 flex-grow">
+          <small className="">{props.startDate || "2000-01-01"}</small>
+          <small className="">{props.endDate || "2100-01-01"}</small>
         </div>
         <Progress value={calculateProgress()} className="w-full " />
       </div>
