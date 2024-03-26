@@ -9,6 +9,7 @@ import UserProfilePage from "@/components/UserProfilePage";
 import ViewProjects from "@/components/ViewProjects";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ProjectManagementPage from "./components/ProjectManagementPage";
 
 function App() {
   return (
@@ -35,6 +36,14 @@ function App() {
               />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
+              <Route
+                path="/projects/:projectId"
+                element={
+                  <ProtectedRoute>
+                    <ProjectManagementPage />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </AuthContextProvider>
         </BrowserRouter>
