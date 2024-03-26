@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:5001';
+const baseURL = process.env.VITE_API_URL || 'http://localhost:5001';
 const TOKEN_KEY = 'auth_token'; // Key used in localStorage
 
 const signup = async (username: string, password: string, displayName: string) => {
