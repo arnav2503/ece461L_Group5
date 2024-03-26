@@ -37,6 +37,11 @@ def login_required(f):
 
     return secured_function
 
+@app.route('/api/health-check', methods=['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'TRACE', 'CONNECT'])
+def health_check():
+    response = jsonify({'message': 'Server is running'}), 200
+    return response
+
 @app.route('/api/signup', methods=['POST', 'OPTIONS'])
 def signup():
     if request.method == 'OPTIONS':
