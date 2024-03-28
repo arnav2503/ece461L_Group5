@@ -73,6 +73,7 @@ const SignupForm = (props: SignupFormProps) => {
               setConfirmPassword(e.target.value)
             }
             className="mb-1"
+            disabled={isLoading}
             required
           />
           <div className="flex flex-row-reverse justify-between align-middle mt-4">
