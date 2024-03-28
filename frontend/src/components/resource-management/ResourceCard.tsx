@@ -8,6 +8,7 @@ import {
 import { useResource } from "@/contexts/ResourceContext";
 import ResourceForm from "@/components/resource-management/ResourceForm";
 import { Database, Dot } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ResourceCardProps {
   id: string;
@@ -21,7 +22,7 @@ function ResourceCard(props: ResourceCardProps) {
   resource.setResourceUsed(props.used);
 
   return (
-    <Card className="w-full">
+    <Card className={cn("", props.className)}>
       <CardHeader>
         <CardTitle>
           <div className="flex flex-row align-baseline justify-center">
@@ -33,7 +34,7 @@ function ResourceCard(props: ResourceCardProps) {
           <small>id: </small>hw-{resource.id}
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col items-center">
+      <CardContent className="flex flex-col items-center p-">
         <section className="flex flex-row justify-between w-5/6">
           <div className="flex flex-row">
             <Dot className=" dark:text-red-500 text-red-700" />
