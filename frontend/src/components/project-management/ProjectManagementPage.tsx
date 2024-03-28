@@ -1,6 +1,8 @@
+import PageHeader from "@/components/navbar/PageHeader";
+import ResourceManager from "@/components/resource-management/ResourceManager";
 import { Toaster } from "@/components/ui/toaster";
-import { useParams } from "react-router-dom";
 import { useProject } from "@/contexts/ProjectContext";
+import { useParams } from "react-router-dom";
 
 function ProjectManagementPage() {
   const { projectId } = useParams();
@@ -11,8 +13,11 @@ function ProjectManagementPage() {
 
   return (
     <>
-      <h1>Project Management Page</h1>
-      <p>Project ID: {project_id}</p>
+      <PageHeader before="" em={project.name} />
+      <div className="flex flex-row items-center g-2 m-2 align-middle justify-center">
+        <div className="flex-grow border"></div>
+        <ResourceManager className="" />
+      </div>
       <Toaster />
     </>
   );

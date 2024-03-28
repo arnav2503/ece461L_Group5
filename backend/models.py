@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, ReferenceField, ListField, DateTimeField, DictField, IntField
+from mongoengine import Document, EmbeddedDocument, StringField, ReferenceField, ListField, DateTimeField, DictField, IntField
 
 class User(Document):
     username = StringField(required=True, unique=True, primary_key=True)
@@ -13,11 +13,5 @@ class Project (Document):
     owner = ReferenceField(User) 
     start_date = DateTimeField()
     end_date = DateTimeField()
-    hardware_list = DictField() # {hardware_id: resources checked out (int)} 
+    hardware_list = DictField() # https://docs.mongoengine.org/guide/defining-documents.html#embedded-documents
     assigned_users = ListField(ReferenceField(User), default=list) # https://docs.mongoengine.org/guide/defining-documents.html#many-to-many-with-listfields
-
-# class HardwareResource (Document):
-#     id = StringField(required=True, unique=True)
-#     capacity = IntField()
-#     availability = IntField(max_value=capacity)
-    

@@ -2,18 +2,18 @@ import { createContext, useContext, useEffect, useState } from "react";
 import project_management from "@/api/project_management";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
-import { set } from "date-fns";
 
 interface ProjectContextType {
   id: string;
   name: string;
-  resources: any[];
+  owner: string;
+  start_date: string;
+  end_date: string;
+  resources: JSON;
   users: string[];
 
   setProjectId: (project_id: string) => void;
   updateProject: () => void;
-  checkOutResource: (resourceId: string, qty: number) => void;
-  checkInResource: (resourceId: string, qty: number) => void;
 
   loading: boolean;
 }
@@ -21,13 +21,14 @@ interface ProjectContextType {
 const ProjectContext = createContext<ProjectContextType>({
   id: "",
   name: "",
-  resources: [],
+  owner: "",
+  start_date: "",
+  end_date: "",
+  resources: JSON.parse("{}"),
   users: [],
 
   setProjectId: () => {},
   updateProject: () => {},
-  checkOutResource: () => {},
-  checkInResource: () => {},
 
   loading: false,
 });
@@ -39,12 +40,17 @@ const ProjectContextProvider = ({
 }) => {
   const [project_id, setProjectId] = useState<string>("");
   const [project_name, setProjectName] = useState<string>("");
-  const [project_resources, setProjectResources] = useState<any[]>([]);
+  const [project_owner, setProjectOwner] = useState<string>("");
+  const [project_start_date, setProjectStartDate] = useState<string>("");
+  const [project_end_date, setProjectEndDate] = useState<string>("");
+  const [project_resources, setProjectResources] = useState(JSON.parse("{}"));
   const [project_users, setProjectUsers] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    updateProject();
+    if (project_id) {
+      updateProject();
+    }
   }, [project_id]);
 
   const updateProject = () => {
@@ -53,27 +59,31 @@ const ProjectContextProvider = ({
       .getProjectDetails(project_id)
       .then((project) => {
         setProjectName(project.name);
-        setProjectResources(project.resources);
+        setProjectOwner(project.owner);
+        setProjectStartDate(project.start_date);
+        setProjectEndDate(project.end_date);
+        setProjectResources(project.hardware_list);
         setProjectUsers(project.users);
       })
       .catch((error) => {
         if (axios.isAxiosError(error)) {
           toast({
             variant: "destructive",
-            description: error.response?.data.message,
+            description: error.response?.data.error,
             title: "Error",
           });
+        } else {
+          toast({
+            variant: "destructive",
+            description: "An error occurred while fetching project details",
+            title: "Error",
+          });
+          console.log(error);
         }
       })
       .finally(() => {
         setLoading(false);
       });
-  };
-  const checkOutResource = (resourceId: string, qty: number) => {
-    // Checkout resource
-  };
-  const checkInResource = (resourceId: string, qty: number) => {
-    // Checkin resource
   };
 
   return (
@@ -81,13 +91,14 @@ const ProjectContextProvider = ({
       value={{
         id: project_id,
         name: project_name,
+        owner: project_owner,
+        start_date: project_start_date,
+        end_date: project_end_date,
         resources: project_resources,
         users: project_users,
 
         setProjectId,
         updateProject,
-        checkOutResource,
-        checkInResource,
 
         loading,
       }}
@@ -97,7 +108,7 @@ const ProjectContextProvider = ({
   );
 };
 
-export const useProject = () => {
+const useProject = () => {
   const project = useContext(ProjectContext);
   if (!project) {
     throw new Error("useProject must be used within a ProjectContextProvider");
@@ -105,4 +116,4 @@ export const useProject = () => {
   return project;
 };
 
-export default { ProjectContext, ProjectContextProvider, useProject };
+export { ProjectContext, ProjectContextProvider, useProject };

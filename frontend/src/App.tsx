@@ -9,6 +9,7 @@ import UserProfilePage from "@/components/user-profile/UserProfilePage";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProjectManagementPage from "./components/project-management/ProjectManagementPage";
+import { ProjectContextProvider } from "@/contexts/ProjectContext";
 
 function App() {
   return (
@@ -39,7 +40,9 @@ function App() {
                 path="/projects/:projectId"
                 element={
                   <ProtectedRoute>
-                    <ProjectManagementPage />
+                    <ProjectContextProvider>
+                      <ProjectManagementPage />
+                    </ProjectContextProvider>
                   </ProtectedRoute>
                 }
               />
