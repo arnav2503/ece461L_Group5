@@ -23,7 +23,7 @@ const getAssignedProjects = async () => {
 }
 
 const getProjectDetails = async (projectId: string) => {
-  const response = await axios.get(`${baseURL}/api/projects/${projectId}`, { withCredentials: true });
+  const response = await axios.get(`${baseURL}/api/projects/project-${projectId}`, { withCredentials: true });
   return response.data;
 }
 

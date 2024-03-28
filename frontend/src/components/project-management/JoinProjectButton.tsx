@@ -1,5 +1,5 @@
 import project_management from "@/api/project_management";
-import { useAuth } from "@/components/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import {
@@ -88,8 +88,10 @@ function JoinProjectButton(props: JoinProjectButtonProps) {
             <div className="flex flex-col w-full align-middle items-center justify-between">
               <Input
                 placeholder={"Project ID"}
+                type="number"
+                inputMode="numeric"
                 className={cn(
-                  "w-full my-2",
+                  "w-full my-2 numeric-input",
                   isLoading && "cursor-not-allowed opacity-50"
                 )}
                 onChange={(event) => setId(event.target.value)}
@@ -98,7 +100,7 @@ function JoinProjectButton(props: JoinProjectButtonProps) {
               />
             </div>
             <DialogFooter>
-              <div className="flex flex-row-reverse justify-between w-full">
+              <div className="flex flex-row-reverse justify-between w-full my-2">
                 <Button
                   type="submit"
                   className={cn(

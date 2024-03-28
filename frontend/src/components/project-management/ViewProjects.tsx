@@ -1,6 +1,6 @@
 import getAssignedProjects from "@/api/project_management";
-import ProjectCard from "@/components/ProjectCard";
-import ProjectCardSkeleton from "@/components/ProjectCardSkeleton";
+import ProjectCard from "@/components/project-management/ProjectCard";
+import ProjectCardSkeleton from "@/components/project-management/ProjectCardSkeleton";
 import { cn } from "@/lib/utils";
 
 import { useEffect, useState } from "react";

@@ -1,7 +1,7 @@
-import { useAuth } from "@/components/AuthContext";
-import PageHeader from "@/components/PageHeader";
+import { useAuth } from "@/contexts/AuthContext";
+import PageHeader from "@/components/navbar/PageHeader";
 import { Toaster } from "@/components/ui/toaster";
-import UserProfile from "@/components/UserProfile";
+import UserProfile from "@/components/user-profile/UserProfile";
 
 function UserProfilePage() {
   const auth = useAuth();

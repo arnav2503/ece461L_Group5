@@ -1,5 +1,5 @@
-import { useAuth } from "@/components/AuthContext";
-import { ChangeDisplayNameButton } from "@/components/ChangeDisplayNameButton";
+import { useAuth } from "@/contexts/AuthContext";
+import { ChangeDisplayNameButton } from "@/components/user-profile/ChangeDisplayNameButton";
 import Spinner from "@/components/Spinner";
 import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/toaster";

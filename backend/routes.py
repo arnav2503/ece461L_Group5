@@ -124,10 +124,10 @@ def create_project(payload):
         if data['start_date'] > data['end_date']:
             response = jsonify({'error': 'Project start date cannot be after the end date'}), 400
             return response
-        print(data['start_date'], data['end_date'])
-        hardware_list = dict()
-        for resource in mongo.resources.objects.find():
-            hardware_list[resource] = 0
+        hardware_list = {}
+        for resource in mongo.resources.find():
+            hardware_list[resource['_id']] = 0
+        print(hardware_list)
 
         project = Project(
             id = data['id'],
@@ -179,7 +179,10 @@ def view_project(payload, id):
         return response
     
     if request.method == 'GET':
-        response = mongo.project.find_one({"_id":id})
+        response = mongo.projects.find_one({"_id":id}), 200
+        if not response:
+            response = jsonify({'error': 'Project not found'}), 404
+            return response
         return response
     
     if request.method == 'DELETE':
@@ -187,6 +190,9 @@ def view_project(payload, id):
         if project['owner'] != payload['username']:
             response = jsonify({'error': 'You do not have permission to delete this project'}), 403
             return response
+        
+        for resource in project['hardware_list']:
+            mongo.resources.find_one_and_update({'_id': resource}, {'$inc': {'available': project['hardware_list'][resource]}})
         
         mongo.projects.delete_one({'_id': id})
         mongo.users.find_one_and_update({'_id': payload['username']}, {'$pull': {'project_list': id}})
@@ -202,6 +208,9 @@ def assign_project(payload, id):
 
     if request.method == 'POST':
         project = mongo.projects.find_one({'_id': id})
+        if not project:
+            response = jsonify({'error': 'Project not found'}), 404
+            return response
 
         user = mongo.users.find_one({'_id': payload['username']})
         if not user:
@@ -225,6 +234,10 @@ def get_assigned_projects(payload):
         return response
 
     project_ids = mongo.users.find_one({'_id': payload['username']}, {'project_list': 1})
+    if not project_ids:
+        response = jsonify({'error': 'User not found'}), 404
+        return response
+    
     projects = []
     for project_id in project_ids['project_list']:
         project = mongo.projects.find_one({'_id': project_id})
@@ -255,6 +268,10 @@ def unassign_project(payload, id):
         return response
 
     project = mongo.projects.find_one({'_id': id})
+    if not project:
+        response = jsonify({'error': 'Project not found'}), 404
+        return response
+    
     if payload['username'] not in project['assigned_users']:
         response = jsonify({'error': 'You are not assigned to this project'}), 403
         return response
@@ -262,4 +279,114 @@ def unassign_project(payload, id):
     mongo.projects.find_one_and_update({'_id': id}, {'$pull': {'assigned_users': payload['username']}})
     mongo.users.find_one_and_update({'_id': payload['username']}, {'$pull': {'project_list': id}})
     response = jsonify({'message': 'Project unassigned successfully'}), 200
+    return response
+
+@app.route('/api/resources/<resource_id>', methods=['GET', 'OPTIONS'])
+@login_required
+def get_resource(payload, resource_id):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    resource = mongo.resources.find_one({'_id': resource_id})
+    if not resource:
+        response = jsonify({'error': 'Resource not found'}), 404
+        return response
+    return resource, 200
+
+@app.route('/api/resources', methods=['GET', 'OPTIONS'])
+@login_required
+def get_resources(payload):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    resources = []
+    for resource in mongo.resources.find():
+        resources.append(resource)
+    response = resources, 200
+    return response
+
+@app.route('/api/resources/<resource_id>/checkout', methods=['POST', 'OPTIONS'])
+@login_required
+def checkout_resource(payload, resource_id):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    request_data = request.get_json()
+    project_data = request_data.get('projectId')
+    qty = request_data.get('qty')
+    if not project_data or not qty:
+        response = jsonify({'error': 'The quantity must be greater than zero'}), 400
+        return response
+    resource = mongo.resources.find_one({'_id': resource_id})
+    if not resource:
+        response = jsonify({'error': 'The requested resource was not found'}), 404
+        return response
+    if resource['available'] == 0 or resource['available'] < qty:
+        response = jsonify({'error': 'The requested resource is out of stock'}), 409
+        return response
+    project = mongo.projects.find_one({'_id': project_data})
+    if not project:
+        response = jsonify({'error': 'The requested project was not found'}), 404
+        return response
+    user = mongo.users.find_one({'_id': payload['username']})
+    if not user:
+        response = jsonify({'error': 'The requesting user was not found'}), 404
+        return response
+    if payload['username'] not in project['assigned_users'] and payload['username'] != project['owner']:
+        response = jsonify({'error': 'You do not have permission to check out resources for this project'}), 403
+        return response
+    if resource_id not in project['hardware_list']:
+        project['hardware_list'][resource_id] = 0
+
+    project['hardware_list'][resource_id] += qty
+    mongo.projects.find_one_and_update({'_id': project_data}, {'$set': {'hardware_list': project['hardware_list']}})
+    mongo.resources.find_one_and_update({'_id': resource_id}, {'$inc': {'available': -qty}})
+    response = jsonify({'message': 'Resource checked out successfully'}), 200
+    return response
+
+@app.route('/api/resources/<resource_id>/checkin', methods=['POST', 'OPTIONS'])
+@login_required
+def checkin_resource(payload, resource_id):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    request_data = request.get_json()
+    project_data = request_data.get('projectId')
+    qty = request_data.get('qty')
+    if not project_data or not qty:
+        response = jsonify({'error': 'The quantity must be greater than zero'}), 400
+        return response
+    resource = mongo.resources.find_one({'_id': resource_id})
+    if not resource:
+        response = jsonify({'error': 'The requested resource was not found'}), 404
+        return response
+    project = mongo.projects.find_one({'_id': project_data})
+    if not project:
+        response = jsonify({'error': 'The requested project was not found'}), 404
+        return response
+    user = mongo.users.find_one({'_id': payload['username']})
+    if not user:
+        response = jsonify({'error': 'The requesting user was not found'}), 404
+        return response
+    if payload['username'] not in project['assigned_users'] and payload['username'] != project['owner']:
+        response = jsonify({'error': 'You do not have permission to check in resources for this project'}), 403
+        return response
+    if resource_id not in project['hardware_list']:
+        response = jsonify({'error': 'The requested resource is not checked out for this project'}), 409
+        return response
+    if project['hardware_list'][resource_id] < qty:
+        response = jsonify({'error': 'The requested quantity is greater than the checked out quantity'}), 409
+        return response
+    if qty + resource['available'] > resource['capacity']:
+        response = jsonify({'error': 'The requested quantity exceeds the resource capacity'}), 409
+        return response
+
+    project['hardware_list'][resource_id] -= qty
+    mongo.projects.find_one_and_update({'_id': project_data}, {'$set': {'hardware_list': project['hardware_list']}})
+    mongo.resources.find_one_and_update({'_id': resource_id}, {'$inc': {'available': qty}})
+    response = jsonify({'message': 'Resource checked in successfully'}), 200
     return response

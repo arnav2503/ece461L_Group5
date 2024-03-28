@@ -1,14 +1,15 @@
 import "@/App.css";
-import { AuthContextProvider } from "@/components/AuthContext";
-import HomePage from "@/components/HomePage";
-import LoginPage from "@/components/LoginPage";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import SignupPage from "@/components/SignupPage";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import UserProfilePage from "@/components/UserProfilePage";
+import { AuthContextProvider } from "@/contexts/AuthContext";
+import ViewAssignedProjects from "@/components/ViewAssignedProjects";
+import LoginPage from "@/components/user-auth/LoginPage";
+import ProtectedRoute from "@/components/user-auth/ProtectedRoute";
+import SignupPage from "@/components/user-auth/SignupPage";
+import { ThemeProvider } from "@/contexts/ThemeProvider";
+import UserProfilePage from "@/components/user-profile/UserProfilePage";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ProjectManagementPage from "./components/ProjectManagementPage";
+import ProjectManagementPage from "./components/project-management/ProjectManagementPage";
+import { ProjectContextProvider } from "@/contexts/ProjectContext";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
                 path="/"
                 element={
                   <ProtectedRoute>
-                    <HomePage />
+                    <ViewAssignedProjects />
                   </ProtectedRoute>
                 }
               />
@@ -39,7 +40,9 @@ function App() {
                 path="/projects/:projectId"
                 element={
                   <ProtectedRoute>
-                    <ProjectManagementPage />
+                    <ProjectContextProvider>
+                      <ProjectManagementPage />
+                    </ProjectContextProvider>
                   </ProtectedRoute>
                 }
               />
