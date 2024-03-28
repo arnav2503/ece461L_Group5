@@ -180,6 +180,9 @@ def view_project(payload, id):
     
     if request.method == 'GET':
         response = mongo.project.find_one({"_id":id})
+        if not response:
+            response = jsonify({'error': 'Project not found'}), 404
+            return response
         return response
     
     if request.method == 'DELETE':
@@ -202,6 +205,9 @@ def assign_project(payload, id):
 
     if request.method == 'POST':
         project = mongo.projects.find_one({'_id': id})
+        if not project:
+            response = jsonify({'error': 'Project not found'}), 404
+            return response
 
         user = mongo.users.find_one({'_id': payload['username']})
         if not user:
@@ -225,6 +231,10 @@ def get_assigned_projects(payload):
         return response
 
     project_ids = mongo.users.find_one({'_id': payload['username']}, {'project_list': 1})
+    if not project_ids:
+        response = jsonify({'error': 'User not found'}), 404
+        return response
+    
     projects = []
     for project_id in project_ids['project_list']:
         project = mongo.projects.find_one({'_id': project_id})
@@ -255,6 +265,10 @@ def unassign_project(payload, id):
         return response
 
     project = mongo.projects.find_one({'_id': id})
+    if not project:
+        response = jsonify({'error': 'Project not found'}), 404
+        return response
+    
     if payload['username'] not in project['assigned_users']:
         response = jsonify({'error': 'You are not assigned to this project'}), 403
         return response

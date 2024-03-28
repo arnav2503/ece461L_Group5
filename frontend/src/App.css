@@ -4,3 +4,14 @@
   padding: 2rem;
   text-align: center;
 }
+
+.numeric-input::-webkit-outer-spin-button,
+.numeric-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.numeric-input {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}

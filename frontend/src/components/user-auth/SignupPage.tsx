@@ -1,4 +1,4 @@
-import SignupForm from "@/components/SignupForm";
+import SignupForm from "@/components/user-auth/SignupForm";
 import { Toaster } from "@/components/ui/toaster";
 
 function SignupPage() {

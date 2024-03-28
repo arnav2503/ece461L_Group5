@@ -1,5 +1,5 @@
-import { ModeToggle } from "@/components/ModeToggle";
-import NavigationBar from "@/components/NavigationBar";
+import { ModeToggle } from "@/components/navbar/ModeToggle";
+import NavigationBar from "@/components/navbar/NavigationBar";
 import { cn } from "@/lib/utils";
 
 import React from "react";

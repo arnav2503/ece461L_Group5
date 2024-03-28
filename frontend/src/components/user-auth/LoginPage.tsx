@@ -1,4 +1,4 @@
-import LoginForm from "@/components/LoginForm";
+import LoginForm from "@/components/user-auth/LoginForm";
 import { Toaster } from "@/components/ui/toaster";
 
 function LoginPage() {

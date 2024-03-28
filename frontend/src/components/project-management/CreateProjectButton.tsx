@@ -1,5 +1,5 @@
 import project_management from "@/api/project_management";
-import { useAuth } from "@/components/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { DateRangeSelector } from "@/components/DateRangeSelector";
 import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
@@ -111,8 +111,9 @@ function CreateProjectButton(props: CreateProjectFormProps) {
               <Input
                 placeholder="Project ID"
                 type="number"
+                inputMode="numeric"
                 className={cn(
-                  "w-full my-1",
+                  "w-full my-1 numeric-input",
                   isLoading && "cursor-not-allowed opacity-50"
                 )}
                 onChange={(event) => setId(event.target.value)}

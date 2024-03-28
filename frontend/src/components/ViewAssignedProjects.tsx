@@ -1,9 +1,9 @@
-import { useAuth } from "@/components/AuthContext";
-import PageHeader from "@/components/PageHeader";
+import { useAuth } from "@/contexts/AuthContext";
+import PageHeader from "@/components/navbar/PageHeader";
 import { Toaster } from "@/components/ui/toaster";
-import ViewProjects from "@/components/ViewProjects";
+import ViewProjects from "@/components/project-management/ViewProjects";
 
-function HomePage() {
+function ViewAssignedProjects() {
   const auth = useAuth();
 
   return (
@@ -18,4 +18,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default ViewAssignedProjects;

@@ -1,8 +1,8 @@
-import AccountManageButton from "@/components/AccountManageButton";
-import CreateProjectButton from "@/components/CreateProjectButton";
-import HomeButton from "@/components/HomeButton";
-import JoinProjectButton from "@/components/JoinProjectButton";
-import { ModeToggle } from "@/components/ModeToggle";
+import AccountManageButton from "@/components/navbar/AccountManageButton";
+import CreateProjectButton from "@/components/project-management/CreateProjectButton";
+import HomeButton from "@/components/navbar/HomeButton";
+import JoinProjectButton from "@/components/project-management/JoinProjectButton";
+import { ModeToggle } from "@/components/navbar/ModeToggle";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
