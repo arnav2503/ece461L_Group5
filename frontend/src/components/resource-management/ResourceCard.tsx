@@ -9,6 +9,8 @@ import { useResource } from "@/contexts/ResourceContext";
 import ResourceForm from "@/components/resource-management/ResourceForm";
 import { Database, Dot } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
+import ResourceCardSkeleton from "./ResourceCardSkeleton";
 
 interface ResourceCardProps {
   id: string;
@@ -18,9 +20,15 @@ interface ResourceCardProps {
 
 function ResourceCard(props: ResourceCardProps) {
   const resource = useResource();
-  resource.setResourceId(props.id);
-  resource.setResourceUsed(props.used);
 
+  useEffect(() => {
+    resource.setResourceId(props.id);
+    resource.setResourceUsed(props.used);
+  }, []);
+
+  if (resource.loading) {
+    return <ResourceCardSkeleton />;
+  }
   return (
     <Card className={cn("", props.className)}>
       <CardHeader>

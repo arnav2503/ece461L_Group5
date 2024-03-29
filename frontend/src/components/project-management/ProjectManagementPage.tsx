@@ -5,6 +5,7 @@ import { useProject } from "@/contexts/ProjectContext";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 function ProjectManagementPage() {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 970px)" });
@@ -12,7 +13,10 @@ function ProjectManagementPage() {
   const project_id = projectId?.split("-")[1] ?? "";
 
   const project = useProject();
-  project.setProjectId(project_id);
+
+  useEffect(() => {
+    project.setProjectId(project_id);
+  }, []);
 
   return (
     <>
