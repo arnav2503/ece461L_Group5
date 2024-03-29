@@ -187,8 +187,6 @@ def view_project(payload, id):
         response[0]['resources_capacity'] = total_capacity
         return response
     
-    # This is a test. TODO remove this comment
-    
     if request.method == 'DELETE':
         project = mongo.projects.find_one({'_id': id})
         if project['owner'] != payload['username']:
