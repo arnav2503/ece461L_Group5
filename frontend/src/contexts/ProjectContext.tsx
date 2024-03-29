@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import project_management from "@/api/project_management";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
-import resource_management from "@/api/resource_management";
 
 interface ProjectContextType {
   id: string;
@@ -69,15 +68,6 @@ const ProjectContextProvider = ({
     }
   }, [project_id]);
 
-  const getResourceDetails = (hardware_list: Object) => {
-    Object.entries(hardware_list).forEach(([key, value]) => {
-      setProjectResourcesUsed((prev) => prev + value);
-      resource_management.getResourceDetails(key).then((resource) => {
-        setProjectResourcesCapacity((prev) => prev + resource.capacity);
-      });
-    });
-  };
-
   const updateProject = () => {
     setLoading(true);
     project_management
@@ -89,7 +79,8 @@ const ProjectContextProvider = ({
         setProjectStartDate(project.start_date);
         setProjectEndDate(project.end_date);
         setProjectResources(project.hardware_list);
-        getResourceDetails(project.hardware_list);
+        setProjectResourcesUsed(project.resources_used);
+        setProjectResourcesCapacity(project.resources_capacity);
         setProjectUsers(project.users);
       })
       .catch((error) => {

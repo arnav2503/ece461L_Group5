@@ -18,7 +18,6 @@ def login_required(f):
         token = request.headers.get('Authorization')
         if not token:
             response = jsonify({'error': 'Token is missing'}), 401
-            print('Missing token')
             return response
 
         try:
@@ -28,10 +27,8 @@ def login_required(f):
             return f(*args, **kwargs)
         except jwt.ExpiredSignatureError:
             response = jsonify({'error': 'Token has expired'}), 401
-            print('Token has expired')
         except jwt.InvalidTokenError:
             response = jsonify({'error': 'Invalid token'}), 401
-            print('Invalid token')
 
         return response
 
@@ -127,8 +124,6 @@ def create_project(payload):
         hardware_list = {}
         for resource in mongo.resources.find():
             hardware_list[resource['_id']] = 0
-        print(hardware_list)
-
         project = Project(
             id = data['id'],
             name = data['name'],
@@ -183,6 +178,13 @@ def view_project(payload, id):
         if not response:
             response = jsonify({'error': 'Project not found'}), 404
             return response
+        total_resources = 0
+        total_capacity = 0
+        for resource in response[0]['hardware_list'].keys():
+            total_resources += response[0]['hardware_list'][resource]
+            total_capacity += mongo.resources.find_one({'_id': resource})['capacity']
+        response[0]['resources_used'] = total_resources
+        response[0]['resources_capacity'] = total_capacity
         return response
     
     if request.method == 'DELETE':
