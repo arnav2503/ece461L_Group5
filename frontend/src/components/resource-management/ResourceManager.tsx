@@ -20,8 +20,8 @@ function ResourceManager(props: ResourceManagerProps) {
         isTabletOrMobile ? "grid-cols-1 gap-2 " : "md:grid-cols-2 w-1/2 gap-5"
       )}
     >
-      {Object.entries(project.resources).map(([key, value]) => (
-        <ResourceContextProvider>
+      {Object.entries(project.hardware_list).map(([key, value]) => (
+        <ResourceContextProvider key={key}>
           <ResourceCard id={key} used={value} />
         </ResourceContextProvider>
       ))}

@@ -1,6 +1,7 @@
 import getAssignedProjects from "@/api/project_management";
 import ProjectCard from "@/components/project-management/ProjectCard";
 import ProjectCardSkeleton from "@/components/project-management/ProjectCardSkeleton";
+import { ProjectContextProvider } from "@/contexts/ProjectContext";
 import { cn } from "@/lib/utils";
 
 import { useEffect, useState } from "react";
@@ -76,17 +77,9 @@ function ViewProjects() {
           )}
         >
           {projects.map((project) => (
-            <ProjectCard
-              key={project._id}
-              id={"project-" + project._id}
-              name={project.name}
-              owner={project.owner}
-              description={project.description}
-              startDate={project.start_date}
-              endDate={project.end_date}
-              resourcesUsed={project.resourcesUsed}
-              resourcesCapacity={project.resourcesCapacity}
-            />
+            <ProjectContextProvider key={project._id}>
+              <ProjectCard id={project._id} />
+            </ProjectContextProvider>
           ))}
         </div>
       )}

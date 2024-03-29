@@ -41,7 +41,6 @@ function ResourceForm() {
               type="number"
               className="numeric-input text-center flex-shrink"
               value={qty}
-              defaultValue={0}
               onChange={(e) => setQty(parseInt(e.target.value))}
             />
             <Button

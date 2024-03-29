@@ -38,7 +38,7 @@ const assignProject = async (projectId: string) => {
 
 const unassignProject = async (projectId: string) => {
   const response = await axios.post(
-    `${baseURL}/api/projects/${projectId}/unassign`,
+    `${baseURL}/api/projects/project-${projectId}/unassign`,
     {},
     { withCredentials: true }
   );
@@ -46,7 +46,7 @@ const unassignProject = async (projectId: string) => {
 }
 
 const deleteProject = async (projectId: string) => {
-  const response = await axios.delete(`${baseURL}/api/projects/${projectId}`, { withCredentials: true });
+  const response = await axios.delete(`${baseURL}/api/projects/project-${projectId}`, { withCredentials: true });
   return response.data;
 }
 
