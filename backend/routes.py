@@ -392,3 +392,83 @@ def checkin_resource(payload, resource_id):
     mongo.resources.find_one_and_update({'_id': resource_id}, {'$inc': {'available': qty}})
     response = jsonify({'message': 'Resource checked in successfully'}), 200
     return response
+
+@app.route('/api/projects/project-<id>/name', methods=['PUT', 'OPTIONS'])
+@login_required
+def update_project_name(payload, id):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    new_name = request.json.get('name')
+    if not new_name:
+        response = jsonify({'error': 'New project name is required'}), 400
+        return response
+
+    try:
+        mongo.projects.find_one_and_update({'_id': id}, {'$set': {'name': new_name}})
+        response = jsonify({'message': 'Project name updated successfully'}), 200
+        return response
+    except Exception as e:
+        response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
+        return response
+
+@app.route('/api/projects/project-<id>/description', methods=['PUT', 'OPTIONS'])
+@login_required
+def update_project_description(payload, id):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    new_description = request.json.get('description')
+    if not new_description:
+        response = jsonify({'error': 'New project description is required'}), 400
+        return response
+
+    try:
+        mongo.projects.find_one_and_update({'_id': id}, {'$set': {'description': new_description}})
+        response = jsonify({'message': 'Project description updated successfully'}), 200
+        return response
+    except Exception as e:
+        response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
+        return response
+    
+@app.route('/api/projects/project-<id>/start-date', methods=['PUT', 'OPTIONS'])
+@login_required
+def update_project_start_date(payload, id):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    new_start_date = request.json.get('start_date')
+    if not new_start_date:
+        response = jsonify({'error': 'New project start date is required'}), 400
+        return response
+
+    try:
+        mongo.projects.find_one_and_update({'_id': id}, {'$set': {'start_date': datetime.strptime(new_start_date[:10], '%Y-%m-%d')}})
+        response = jsonify({'message': 'Project start date updated successfully'}), 200
+        return response
+    except Exception as e:
+        response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
+        return response
+    
+@app.route('/api/projects/project-<id>/end-date', methods=['PUT', 'OPTIONS'])
+@login_required
+def update_project_end_date(payload, id):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+
+    new_end_date = request.json.get('end_date')
+    if not new_end_date:
+        response = jsonify({'error': 'New project end date is required'}), 400
+        return response
+
+    try:
+        mongo.projects.find_one_and_update({'_id': id}, {'$set': {'end_date': datetime.strptime(new_end_date[:10], '%Y-%m-%d')}})
+        response = jsonify({'message': 'Project end date updated successfully'}), 200
+        return response
+    except Exception as e:
+        response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
+        return response

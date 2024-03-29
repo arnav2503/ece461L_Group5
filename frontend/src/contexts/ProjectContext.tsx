@@ -21,6 +21,11 @@ interface ProjectContextType {
   unassignUser: () => void;
   deleteProject: () => void;
 
+  updateName: (name: string) => void;
+  updateDescription: (description: string) => void;
+  updateStartDate: (start_date: string) => void;
+  updateEndDate: (end_date: string) => void;
+
   loading: boolean;
 }
 
@@ -41,6 +46,11 @@ const ProjectContext = createContext<ProjectContextType>({
   assignUser: () => {},
   unassignUser: () => {},
   deleteProject: () => {},
+
+  updateName: () => {},
+  updateDescription: () => {},
+  updateStartDate: () => {},
+  updateEndDate: () => {},
 
   loading: false,
 });
@@ -199,6 +209,137 @@ const ProjectContextProvider = ({
       });
   };
 
+  const updateName = (name: string) => {
+    setLoading(true);
+    project_management
+      .updateName(project_id, name)
+      .then(() => {
+        updateProject();
+        toast({
+          variant: "default",
+          description: "Project name updated successfully.",
+          title: "Success",
+        });
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          toast({
+            variant: "destructive",
+            description: error.response?.data.error,
+            title: "Error",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description: "An error occurred while updating the project name",
+            title: "Error",
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const updateDescription = (description: string) => {
+    setLoading(true);
+    project_management
+      .updateDescription(project_id, description)
+      .then(() => {
+        updateProject();
+        toast({
+          variant: "default",
+          description: "Project description updated successfully.",
+          title: "Success",
+        });
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          toast({
+            variant: "destructive",
+            description: error.response?.data.error,
+            title: "Error",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description:
+              "An error occurred while updating the project description",
+            title: "Error",
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const updateStartDate = (start_date: string) => {
+    setLoading(true);
+    project_management
+      .updateStartDate(project_id, new Date(start_date))
+      .then(() => {
+        updateProject();
+        toast({
+          variant: "default",
+          description: "Project start date updated successfully.",
+          title: "Success",
+        });
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          toast({
+            variant: "destructive",
+            description: error.response?.data.error,
+            title: "Error",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description:
+              "An error occurred while updating the project start date",
+            title: "Error",
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const updateEndDate = (end_date: string) => {
+    setLoading(true);
+    project_management
+      .updateEndDate(project_id, new Date(end_date))
+      .then(() => {
+        updateProject();
+        toast({
+          variant: "default",
+          description: "Project end date updated successfully.",
+          title: "Success",
+        });
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          toast({
+            variant: "destructive",
+            description: error.response?.data.error,
+            title: "Error",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description:
+              "An error occurred while updating the project end date",
+            title: "Error",
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <ProjectContext.Provider
       value={{
@@ -218,6 +359,11 @@ const ProjectContextProvider = ({
         assignUser,
         unassignUser,
         deleteProject,
+
+        updateName,
+        updateDescription,
+        updateStartDate,
+        updateEndDate,
 
         loading,
       }}

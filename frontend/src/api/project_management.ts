@@ -50,6 +50,43 @@ const deleteProject = async (projectId: string) => {
   return response.data;
 }
 
+const updateName = async (projectId: string, name: string) => {
+  const response = await axios.put(
+    `${baseURL}/api/projects/project-${projectId}/name`,
+    { name },
+    { withCredentials: true }
+  );
+  return response.data;
+}
+
+const updateDescription = async (projectId: string, description: string) => {
+  const response = await axios.put(
+    `${baseURL}/api/projects/project-${projectId}/description`,
+    { description },
+    { withCredentials: true }
+  );
+  return response.data;
+}
+
+const updateStartDate = async (projectId: string, start_date: Date) => {
+  const response = await axios.put(
+    `${baseURL}/api/projects/project-${projectId}/start-date`,
+    { start_date },
+    { withCredentials: true }
+  );
+  return response.data;
+}
+
+const updateEndDate = async (projectId: string, end_date: Date) => {
+  const response = await axios.put(
+    `${baseURL}/api/projects/project-${projectId}/end-date`,
+    { end_date },
+    { withCredentials: true }
+  );
+  return response.data;
+}
+
+
 // Configure axios to include the token in requests
 axios.interceptors.request.use((config) => {
   const token = getAuthToken.getAuthToken();
@@ -59,4 +96,4 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-export default { createProject, getUnassignedProjects, getAssignedProjects, getProjectDetails, assignProject, unassignProject, deleteProject }
+export default { createProject, getUnassignedProjects, getAssignedProjects, getProjectDetails, assignProject, unassignProject, deleteProject, updateName, updateDescription, updateStartDate, updateEndDate}
