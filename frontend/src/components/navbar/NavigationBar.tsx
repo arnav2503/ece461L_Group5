@@ -1,6 +1,6 @@
 import AccountManageButton from "@/components/navbar/AccountManageButton";
 import CreateProjectButton from "@/components/project-management/CreateProjectButton";
-import HomeButton from "@/components/navbar/HomeButton";
+import HomeButton from "@/components/navbar/CreateProjectButton";
 import JoinProjectButton from "@/components/project-management/JoinProjectButton";
 import { ModeToggle } from "@/components/navbar/ModeToggle";
 import { Button } from "@/components/ui/button";

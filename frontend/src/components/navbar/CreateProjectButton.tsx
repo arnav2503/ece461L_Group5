@@ -12,7 +12,7 @@ const CreateProjectButton = (props: CreateProjectButtonProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/");
+    navigate("/projects");
   };
 
   return (

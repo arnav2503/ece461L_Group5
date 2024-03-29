@@ -192,7 +192,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       setUserID(response.username);
       setDisplayName(response.display_name);
       load();
-      navigate("/");
+      navigate("/projects");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
