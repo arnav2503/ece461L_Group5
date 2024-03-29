@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
+import UpdateProjectForm from "@/debug/UpdateProjectForm";
 
 function ProjectManagementPage() {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 970px)" });

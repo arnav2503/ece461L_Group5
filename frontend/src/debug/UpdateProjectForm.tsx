@@ -1,30 +1,20 @@
-import { DateRangeSelector } from "@/components/DateRangeSelector";
+import { DatePicker } from "@/components/DatePicker";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useProject } from "@/contexts/ProjectContext";
 import { useState } from "react";
-import { DateRange } from "react-day-picker";
 
 function UpdateProjectForm() {
-  const [input, setInput] = useState("");
-  const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date(),
-  });
   const project = useProject();
 
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const handleDateChange = (date: Date | undefined) => {
+    setSelectedDate(date);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    project.updateStartDate(selectedDate!.toDateString());
     e.preventDefault();
-    if (
-      dateRange === undefined ||
-      dateRange.from === undefined ||
-      dateRange.to === undefined
-    ) {
-      return;
-    } else {
-      project.updateStartDate(dateRange.from.toDateString());
-      project.updateEndDate(dateRange.to.toDateString());
-    }
   };
 
   return (
@@ -35,7 +25,7 @@ function UpdateProjectForm() {
       <p className="text-center text-lg">{project.end_date}</p>
 
       <form onSubmit={handleSubmit}>
-        <DateRangeSelector onDateChange={(d) => setDateRange(d)} />
+        <DatePicker onDateChange={handleDateChange} />
         <Button type="submit">Update Project</Button>
       </form>
     </>
