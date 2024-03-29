@@ -5,6 +5,7 @@ import { useProject } from "@/contexts/ProjectContext";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/lib/utils";
+import ViewProjectDetails from "../ViewProjectDetails";
 
 function ProjectManagementPage() {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 970px)" });
@@ -30,7 +31,9 @@ function ProjectManagementPage() {
         )}
       >
         <div className="flex-grow border rounded-2xl p-5">
-          <p className="text-foreground/50">&lt;project details here&gt;</p>
+          <p className="text-foreground/50">
+            <ViewProjectDetails />
+          </p>
         </div>
         <ResourceManager className={cn("flex-grow-0")} />
       </div>
