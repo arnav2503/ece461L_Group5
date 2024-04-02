@@ -53,7 +53,7 @@ function ResourceForm() {
           <Slider
             className="my-5 w-3/4 mx-auto"
             value={[qty]}
-            max={resource.available}
+            max={Math.max(resource.available, resource.used)}
             onValueChange={(value) => setQty(value[0])}
           />
           <div className="flex flex-row justify-center align-middle items-center gap-1 m-2">
