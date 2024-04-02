@@ -34,6 +34,16 @@ def login_required(f):
 
     return secured_function
 
+@app.route('/api/active', methods=['GET'])
+def active():
+    response = 'OK', 200
+    return response
+
+@app.route('/api/error', methods=['GET'])
+def error():
+    response = 'ERROR', 500
+    return response
+
 @app.route('/api/signup', methods=['POST', 'OPTIONS'])
 def signup():
     if request.method == 'OPTIONS':

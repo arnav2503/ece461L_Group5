@@ -2,6 +2,8 @@ import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import BackendSpinUpAlert from "./BackendSpinUpAlert";
+import { useState } from "react";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -11,9 +13,11 @@ function HomePage() {
   const handleGitHub = () => {
     window.open("https://github.com/arnav2503/ece461L_Group5");
   };
+  const [backendActive, setBackendActive] = useState(false);
+
   return (
-    <div className="space-y-3 flex flex-col border rounded-2xl p-5 py-20 h-[92dvh]">
-      <div className="flex space-y-10 flex-col m-10 items-center">
+    <div className="space-y-3 flex flex-col border rounded-2xl p-5 py-10 h-[92dvh] items-center align-middle ">
+      <div className="flex space-y-10 flex-col my-10 items-center flex-grow-1">
         <h1 className="text-4xl font-bold text-center">
           <span className="font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-700 via-purple-600 to-red-500">
             Group 5:
@@ -64,8 +68,16 @@ function HomePage() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col space-y-3 items-center">
-        <Button className="group max-w-fit" onClick={handleClick}>
+      <BackendSpinUpAlert
+        className="w-2/3 my-5"
+        onBackendActive={() => setBackendActive(true)}
+      />
+      <div className="flex flex-col space-y-3 items-center flex-grow-0 mt-10">
+        <Button
+          className="group max-w-fit"
+          onClick={handleClick}
+          disabled={!backendActive}
+        >
           Get Started{" "}
           <ArrowRight className="size-3 ml-3 group-hover:-rotate-45 transition-all" />
         </Button>
