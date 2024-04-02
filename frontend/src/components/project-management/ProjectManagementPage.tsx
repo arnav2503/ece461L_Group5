@@ -5,7 +5,7 @@ import { useProject } from "@/contexts/ProjectContext";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/lib/utils";
-import ViewProjectDetails from "../ViewProjectDetails";
+import ViewProjectDetails from "./ViewProjectDetails";
 import { useEffect } from "react";
 
 function ProjectManagementPage() {
