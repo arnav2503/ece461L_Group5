@@ -42,7 +42,7 @@ function ResourceCard(props: ResourceCardProps) {
           <small>id: </small>hw-{resource.id}
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col items-center">
+      <CardContent className="flex flex-col items-center p-">
         <section className="flex flex-row justify-between w-5/6">
           <div className="flex flex-row">
             <Dot className=" dark:text-red-500 text-red-700" />
