@@ -386,7 +386,7 @@ def get_resources(payload):
             response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
             return response
 
-@app.route('/api/resources/<resource_id>', methods=['GET', 'PATCH', 'OPTIONS'])
+@app.route('/api/resources/hw-<resource_id>', methods=['GET', 'PATCH', 'OPTIONS'])
 @login_required
 def get_resource(payload, resource_id):
     if request.method == 'OPTIONS':

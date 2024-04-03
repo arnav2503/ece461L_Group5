@@ -18,7 +18,7 @@ const getResources = async () => {
  * @throws 404 if the resource does not exist, 500 for server errors (see `response.error` for details)
  */
 const getResourceDetails = async (resourceId: string) => {
-  const response = await axios.get(`${baseURL}/api/resources/${resourceId}`);
+  const response = await axios.get(`${baseURL}/api/resources/hw-${resourceId}`);
   return response.data;
 }
 
@@ -30,7 +30,7 @@ const getResourceDetails = async (resourceId: string) => {
  * @throws 400 for malformed data, 403 if the user does not have permission to manage the project, 404 if the resource, project, or user does not exist, 409 if the quantity is invalid, 500 for server errors (see `response.error` for details)
  */
 const checkoutResource = async (projectId: string, resourceId: string, qty: number) => {
-  const response = await axios.patch(`${baseURL}/api/resources/${resourceId}`, 
+  const response = await axios.patch(`${baseURL}/api/resources/hw-${resourceId}`, 
   { 
     'field': 'available',
     'method': 'checkout',
@@ -50,7 +50,7 @@ const checkoutResource = async (projectId: string, resourceId: string, qty: numb
  * @throws 400 for malformed data, 403 if the user does not have permission to manage the project, 404 if the resource, project, or user does not exist, 409 if the quantity is invalid, 500 for server errors (see `response.error` for details)
  */
 const checkinResource = async (projectId: string, resourceId: string, qty: number) => {
-  const response = await axios.patch(`${baseURL}/api/resources/${resourceId}`, 
+  const response = await axios.patch(`${baseURL}/api/resources/hw-${resourceId}`, 
   { 
     'field': 'available',
     'method': 'checkin',
