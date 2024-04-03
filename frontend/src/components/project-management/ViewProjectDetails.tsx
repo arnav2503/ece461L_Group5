@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useProject } from "@/contexts/ProjectContext";
 
 function ViewProjectDetails() {
+  // @ts-ignore // ! REMOVE THIS LINE ONCE IMPLEMENTED ! //
   const project = useProject();
+  // @ts-ignore // ! REMOVE THIS LINE ONCE IMPLEMENTED ! // 
   const [currentProjectData, setCurrentProjectData] = useState();
 
   return (

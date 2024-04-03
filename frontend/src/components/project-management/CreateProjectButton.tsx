@@ -55,7 +55,7 @@ function CreateProjectButton(props: CreateProjectFormProps) {
         start_date,
         end_date
       );
-      auth.update_user();
+      auth.refreshUser();
       toast({
         title: "Project Created",
         description: "The project has been created successfully.",

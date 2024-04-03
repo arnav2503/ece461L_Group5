@@ -16,7 +16,7 @@ interface ProjectContextType {
   users: string[];
 
   setProjectId: (project_id: string) => void;
-  updateProject: () => void;
+  refreshProject: () => void;
   assignUser: () => void;
   unassignUser: () => void;
   deleteProject: () => void;
@@ -42,7 +42,7 @@ const ProjectContext = createContext<ProjectContextType>({
   users: [],
 
   setProjectId: () => {},
-  updateProject: () => {},
+  refreshProject: () => {},
   assignUser: () => {},
   unassignUser: () => {},
   deleteProject: () => {},
@@ -355,7 +355,7 @@ const ProjectContextProvider = ({
         users: project_users,
 
         setProjectId,
-        updateProject,
+        refreshProject: updateProject,
         assignUser,
         unassignUser,
         deleteProject,

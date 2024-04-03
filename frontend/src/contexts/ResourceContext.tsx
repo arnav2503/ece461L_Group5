@@ -90,7 +90,7 @@ const ResourceContextProvider = ({
     resource_management
       .checkoutResource(project.id, resource_id, qty)
       .then(() => {
-        project.updateProject();
+        project.refreshProject();
         updateResource();
         setResourceUsed(resource_used + qty);
         toast({
@@ -124,7 +124,7 @@ const ResourceContextProvider = ({
     resource_management
       .checkinResource(project.id, resource_id, qty)
       .then(() => {
-        project.updateProject();
+        project.refreshProject();
         updateResource();
         setResourceUsed(resource_used - qty);
         toast({

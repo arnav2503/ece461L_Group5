@@ -37,7 +37,7 @@ function JoinProjectButton(props: JoinProjectButtonProps) {
     project_management
       .assignProject(id)
       .then(() => {
-        auth.update_user();
+        auth.refreshUser();
         toast({
           variant: "default",
           description: "Project joined successfully.",

@@ -23,7 +23,7 @@ interface AuthContextType {
     _id: string;
     project_list: string[];
   };
-  update_user: () => void;
+  refreshUser: () => void;
   updateDisplayName: (displayName: string) => void;
 }
 
@@ -40,7 +40,7 @@ const AuthContext = createContext<AuthContextType>({
     _id: "",
     project_list: [],
   },
-  update_user: () => {},
+  refreshUser: () => {},
   updateDisplayName: () => {},
 });
 
@@ -75,36 +75,14 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const load = () => {
+  const refreshUser = () => {
     setLoading(true);
     checkAuth().finally(() => setLoading(false));
   };
 
   useEffect(() => {
-    load();
+    refreshUser();
   }, []);
-
-  const update_user = async () => {
-    setLoading(true);
-    try {
-      const user = await auth.getUser();
-      setUser(user);
-      setDisplayName(user.display_name);
-      setUserID(user._id);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          setIsAuthenticated(false);
-          setUserID(null);
-          setDisplayName(null);
-        }
-      } else {
-        console.error("Unexpected error during authentication check:", error); // Log for debugging
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const updateDisplayName = async (displayName: string) => {
     try {
@@ -191,7 +169,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAuthenticated(true);
       setUserID(response.username);
       setDisplayName(response.display_name);
-      load();
+      refreshUser();
       navigate("/projects");
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -232,7 +210,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         logout: logout,
         loading,
         user,
-        update_user,
+        refreshUser: refreshUser,
         updateDisplayName,
       }}
     >
