@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { useProject } from "@/contexts/ProjectContext";
 import ProjectCardSkeleton from "@/components/project-management/ProjectCardSkeleton";
 import { useEffect } from "react";
-import { time } from "console";
 
 interface ProjectProps {
   id: string;
