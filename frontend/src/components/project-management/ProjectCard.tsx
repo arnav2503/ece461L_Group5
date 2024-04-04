@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useProject } from "@/contexts/ProjectContext";
 import ProjectCardSkeleton from "@/components/project-management/ProjectCardSkeleton";
 import { useEffect } from "react";
+import { time } from "console";
 
 interface ProjectProps {
   id: string;
@@ -19,6 +20,10 @@ const ProjectCard = (props: ProjectProps) => {
   const auth = useAuth();
   const navigate = useNavigate();
   const project = useProject();
+
+  const options = {
+    timeZone: "UTC",
+  };
 
   useEffect(() => {
     project.setProjectId(props.id);
@@ -90,11 +95,13 @@ const ProjectCard = (props: ProjectProps) => {
       <div className="flex flex-col items-center mb-4 flex-grow">
         <div className="flex justify-between w-full mt-2 flex-grow">
           <small className="">
-            {new Date(project.start_date).toLocaleDateString("us-EN") ||
-              "1970-01-01"}
+            {new Date(project.start_date).toLocaleDateString(
+              "en-US",
+              options
+            ) || "1970-01-01"}
           </small>
           <small className="">
-            {new Date(project.end_date).toLocaleDateString("us-EN") ||
+            {new Date(project.end_date).toLocaleDateString("en-US", options) ||
               "3000-01-01"}
           </small>
         </div>
