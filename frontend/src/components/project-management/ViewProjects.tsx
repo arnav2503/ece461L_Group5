@@ -2,7 +2,6 @@ import ProjectCard from "@/components/project-management/ProjectCard";
 import { useAuth } from "@/contexts/AuthContext";
 import { ProjectContextProvider } from "@/contexts/ProjectContext";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
 
 import { useMediaQuery } from "react-responsive";
 
