@@ -1,6 +1,6 @@
 # ECE 461L Group Project: Project Management Web App
 
-## See the project live at [software-lab.armaanv.com](https://software-project.armaanv.com)
+## See the project live at [software-project.armaanv.com](https://software-project.armaanv.com)
 
 ## Course Information
 
