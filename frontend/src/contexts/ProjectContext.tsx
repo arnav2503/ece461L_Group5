@@ -15,6 +15,8 @@ interface ProjectContextType {
   resources_capacity: number;
   users: string[];
 
+  project_found: boolean;
+
   setProjectId: (project_id: string) => void;
   refreshProject: () => void;
   assignUser: () => void;
@@ -40,6 +42,8 @@ const ProjectContext = createContext<ProjectContextType>({
   resources_used: 0,
   resources_capacity: 0,
   users: [],
+
+  project_found: false,
 
   setProjectId: () => {},
   refreshProject: () => {},
@@ -72,6 +76,8 @@ const ProjectContextProvider = ({
   const [project_users, setProjectUsers] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const [project_found, setProjectFound] = useState(false);
+
   useEffect(() => {
     if (project_id) {
       updateProject();
@@ -92,6 +98,7 @@ const ProjectContextProvider = ({
         setProjectResourcesUsed(project.resources_used);
         setProjectResourcesCapacity(project.resources_capacity);
         setProjectUsers(project.users);
+        setProjectFound(true);
       })
       .catch((error) => {
         if (axios.isAxiosError(error)) {
@@ -353,6 +360,8 @@ const ProjectContextProvider = ({
         resources_used: project_resources_used,
         resources_capacity: project_resources_capacity,
         users: project_users,
+
+        project_found: project_found,
 
         setProjectId,
         refreshProject: updateProject,

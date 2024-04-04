@@ -159,6 +159,21 @@ def user(payload):
                 response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
                 return response
     
+@app.route('/api/projects', methods=['GET', 'OPTIONS'])
+@login_required
+def projects(payload):
+    if request.method == 'OPTIONS':
+        response = "OK", 200
+        return response
+    if request.method == 'GET':
+        try:
+            projects = mongo.users.find_one({'_id': payload['username']}, {'project_list': 1})['project_list']
+            response = projects, 200
+            return response
+        except Exception as e:
+            response = jsonify({'error': f'An unexpected error occured: {str(e)}'}), 500
+            return response
+
 @app.route('/api/projects/project-<id>', methods=['GET', 'POST', 'DELETE', 'PATCH', 'OPTIONS'])
 @login_required
 def view_project(payload, id):
@@ -168,10 +183,11 @@ def view_project(payload, id):
     
     if request.method == 'GET':
         try: 
-            response = mongo.projects.find_one({"_id":id}), 200
-            if not response:
+            project = mongo.projects.find_one({'_id': id})
+            if not project:
                 response = jsonify({'error': 'Project not found'}), 404
                 return response
+            response = project, 200
             total_resources = 0
             total_capacity = 0
             for resource in response[0]['hardware_list'].keys():

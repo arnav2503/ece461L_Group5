@@ -19,12 +19,10 @@ interface AuthContextType {
   ) => void;
   logout: () => void;
   loading: boolean;
-  user: {
-    _id: string;
-    project_list: string[];
-  };
+  project_list: string[];
   refreshUser: () => void;
   updateDisplayName: (displayName: string) => void;
+  refreshProjectList: () => void;
 }
 
 // Default values for the context, including userID and its setter
@@ -36,12 +34,10 @@ const AuthContext = createContext<AuthContextType>({
   signup: () => {},
   logout: () => {},
   loading: true,
-  user: {
-    _id: "",
-    project_list: [],
-  },
+  project_list: [],
   refreshUser: () => {},
   updateDisplayName: () => {},
+  refreshProjectList: () => {},
 });
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -49,10 +45,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [userID, setUserID] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({
-    _id: "",
-    project_list: [],
-  });
+  const [projectList, setProjectList] = useState<string[]>([]); // Added state for project list
   const navigate = useNavigate();
 
   const checkAuth = async () => {
@@ -61,7 +54,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAuthenticated(true);
       setUserID(user._id);
       setDisplayName(user.display_name);
-      setUser(user);
+      setProjectList(user.project_list); // Set project list
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
@@ -83,6 +76,32 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     refreshUser();
   }, []);
+
+  const refreshProjectList = async () => {
+    auth
+      .getAssignedProjects()
+      .then((projects) => {
+        setProjectList(projects);
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            toast({
+              title: "Failed to fetch projects",
+              description: error.response.data.error,
+              variant: "destructive",
+            });
+          }
+        } else {
+          console.error("Unexpected error during project list refresh:", error); // Log for debugging
+          toast({
+            title: "Failed to fetch projects",
+            description: error.response.error,
+            variant: "destructive",
+          });
+        }
+      });
+  };
 
   const updateDisplayName = async (displayName: string) => {
     try {
@@ -209,9 +228,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         signup: signup,
         logout: logout,
         loading,
-        user,
+        project_list: projectList,
         refreshUser: refreshUser,
         updateDisplayName,
+        refreshProjectList,
       }}
     >
       {children}

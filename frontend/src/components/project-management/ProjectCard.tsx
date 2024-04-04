@@ -42,10 +42,10 @@ const ProjectCard = (props: ProjectProps) => {
   const onRemove = () => {
     if (auth.userID === project.owner) {
       project.deleteProject();
-      auth.refreshUser();
+      auth.refreshProjectList();
     } else {
       project.unassignUser();
-      auth.refreshUser();
+      auth.refreshProjectList();
     }
   };
 

@@ -1,6 +1,6 @@
 import "@/App.css";
 import HomePage from "@/components/HomePage";
-import ViewAssignedProjects from "@/components/ViewAssignedProjects";
+import ProjectsPage from "@/components/project-management/ProjectsPage";
 import ProjectManagementPage from "@/components/project-management/ProjectManagementPage";
 import LoginPage from "@/components/user-auth/LoginPage";
 import ProtectedRoute from "@/components/user-auth/ProtectedRoute";
@@ -24,7 +24,7 @@ function App() {
                 path="/projects"
                 element={
                   <ProtectedRoute>
-                    <ViewAssignedProjects />
+                    <ProjectsPage />
                   </ProtectedRoute>
                 }
               />

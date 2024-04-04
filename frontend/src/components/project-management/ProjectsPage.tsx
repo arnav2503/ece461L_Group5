@@ -3,7 +3,7 @@ import PageHeader from "@/components/navbar/PageHeader";
 import { Toaster } from "@/components/ui/toaster";
 import ViewProjects from "@/components/project-management/ViewProjects";
 
-function ViewAssignedProjects() {
+function ProjectsPage() {
   const auth = useAuth();
 
   return (
@@ -18,4 +18,4 @@ function ViewAssignedProjects() {
   );
 }
 
-export default ViewAssignedProjects;
+export default ProjectsPage;

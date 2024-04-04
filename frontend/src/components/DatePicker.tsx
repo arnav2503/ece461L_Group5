@@ -13,18 +13,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-// Add a prop for the onDateChange callback function
 interface DatePickerProps {
   onDateChange: (date: Date | undefined) => void;
+  className?: string;
+  id?: string;
 }
 
-export function DatePicker({ onDateChange }: DatePickerProps) {
+export function DatePicker(props: DatePickerProps) {
   const [date, setDate] = React.useState<Date>();
 
-  // Update the setDate function to also call the onDateChange prop
   const handleDateChange = (newDate: Date | undefined) => {
     setDate(newDate);
-    onDateChange(newDate); // Call the callback function with the new date
+    props.onDateChange(newDate);
   };
 
   return (
@@ -36,16 +36,17 @@ export function DatePicker({ onDateChange }: DatePickerProps) {
             "w-[280px] justify-start text-left font-normal",
             !date && "text-muted-foreground"
           )}
+          id={props.id}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? format(date, "PPP") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className={cn("w-auto p-0", props.className)}>
         <Calendar
           mode="single"
           selected={date}
-          onSelect={handleDateChange} // Use the new handleDateChange function
+          onSelect={handleDateChange}
           initialFocus
         />
       </PopoverContent>

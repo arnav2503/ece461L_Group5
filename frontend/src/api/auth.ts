@@ -75,6 +75,11 @@ const getAuthToken = () => {
   return localStorage.getItem(TOKEN_KEY);
 };
 
+const getAssignedProjects = async () => {
+  const response = await axios.get(`${baseURL}/api/projects`, { withCredentials: true });
+  return response.data;
+}
+
 
 /**
  * Add the Authorization header to all requests if the user is logged in.
@@ -87,4 +92,4 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-export default { signup, login, updateDisplayName, logout, isLoggedIn: authTokenExists, getAuthToken, getUser };
+export default { signup, login, updateDisplayName, logout, isLoggedIn: authTokenExists, getAuthToken, getUser, getAssignedProjects };

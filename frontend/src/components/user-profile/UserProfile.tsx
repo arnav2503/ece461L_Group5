@@ -45,9 +45,9 @@ function UserProfile(this: any) {
           <Separator />
           <div className="flex flex-row justify-between align-top mt-5">
             <span className="font-bold">Assigned Projects: </span>
-            {auth.user.project_list.length > 0 ? (
+            {auth.project_list.length > 0 ? (
               <ul className="text-end list-none">
-                {auth.user.project_list.map((project, index) => (
+                {auth.project_list.map((project, index) => (
                   <li
                     onClick={() => {
                       handleClick(project);

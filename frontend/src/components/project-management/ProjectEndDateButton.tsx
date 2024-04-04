@@ -1,4 +1,4 @@
-import { useAuth } from "@/contexts/AuthContext";
+import { DatePicker } from "@/components/DatePicker";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,29 +10,33 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import {
   Tooltip,
-  TooltipTrigger,
   TooltipContent,
   TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useProject } from "@/contexts/ProjectContext";
 import { cn } from "@/lib/utils";
 
 import { Pencil2Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
-interface ChangeDisplayNameButtonProps {
+interface ProjectEndDateEditButtonProps {
   className?: string;
 }
 
-export function ChangeDisplayNameButton(props: ChangeDisplayNameButtonProps) {
-  const auth = useAuth();
-  const [displayName, setDisplayName] = useState(auth.displayName || "");
+function ProjectEndDateEditButton(props: ProjectEndDateEditButtonProps) {
+  const project = useProject();
+  const [endDate, setEndDate] = useState<Date | undefined>(
+    new Date(project.end_date)
+  );
 
   const handleSubmit = () => {
-    auth.updateDisplayName(displayName);
+    if (endDate) {
+      project.updateEndDate(endDate.toDateString());
+    }
   };
 
   return (
@@ -47,25 +51,24 @@ export function ChangeDisplayNameButton(props: ChangeDisplayNameButtonProps) {
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Change your display name.</p>
+            <p>Change the project's end date.</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit display name</DialogTitle>
+          <DialogTitle>Edit project end date</DialogTitle>
           <DialogDescription>Click save when you're done.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="display-name" className="text-right">
-              Display Name
+            <Label htmlFor="project-name" className="text-right">
+              Project End Date
             </Label>
-            <Input
-              id="display-name"
-              defaultValue={auth.displayName || ""}
+            <DatePicker
+              id="project-name"
               className="col-span-3"
-              onChange={(e) => setDisplayName(e.target.value)}
+              onDateChange={setEndDate}
             />
           </div>
         </div>
@@ -81,3 +84,5 @@ export function ChangeDisplayNameButton(props: ChangeDisplayNameButtonProps) {
     </Dialog>
   );
 }
+
+export default ProjectEndDateEditButton;
