@@ -59,5 +59,3 @@ The project is a web app that allows users to create and manage projects and ass
    1. `cd backend && python app.py`
 5. Open the app in your browser
    1. `http://localhost:5173`
-
-
