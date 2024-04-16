@@ -11,7 +11,7 @@ Spring 2024, University of Texas at Austin
 
 1. [Armaan Vakharia](https://github.com/armaan-v924)
 2. [Arnav Kithania](https://github.com/arnav2503)
-3. Fahim Imtaiz
+3. [Fahim Imtaiz](https://github.com/fahimquicklife8)
 4. Wasay Asrar
 
 ## Project Description
